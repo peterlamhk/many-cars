@@ -8,11 +8,9 @@
 
 + Install [Node.js](http://www.nodejs.org)
 
-+ Install the required npm modules by issuing these commands:
++ Install the required npm modules and phaser.js by issuing these commands:
 
 `npm install`
-
-+ Install phaser.js by running:
 
 `bower install`
 
@@ -32,6 +30,8 @@
 
 + To add new Phaser states (optional, generator creates basic initial states):
 
+  `npm install -g yo generator-phaser`
+
   `yo phaser:state`
 
   *You will be asked for a new state name.*
@@ -48,7 +48,7 @@
 
 **CREDITS**
 
-+ This game is based on [julien/generator-phaser](https://github.com/julien/generator-phaser)
++ This game is using [julien/generator-phaser](https://github.com/julien/generator-phaser)
 
 + [@photonstorm](https://github.com/photonstorm/) for creating
 [phaser](https://github.com/photonstorm/phaser).
