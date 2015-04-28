@@ -3,6 +3,8 @@
 
   function Game() {
     this.player = null;
+    this.steeringAngle = 0;
+    this.steeringMultiplier = 2;
   }
 
   Game.prototype = {
@@ -17,8 +19,11 @@
 
       this.car = this.add.sprite(x, y, 'cars');
       this.car.anchor.setTo(0.5, 0.5);
-      this.car.animations.add('turn', Phaser.Animation.generateFrameNames('car', 0, 23, '', 2), 5, true);
-      this.car.animations.play('turn');
+      // this.car.animations.add('turn', Phaser.Animation.generateFrameNames('car', 0, 23, '', 2), 5, true);
+      // this.car.animations.play('turn');
+      this.car.frame = 23;
+
+      this.cursors = this.game.input.keyboard.createCursorKeys();
     },
 
     update: function () {
@@ -38,6 +43,14 @@
 
       // this.player.scale.x = scale * 0.6;
       // this.player.scale.y = scale * 0.6;
+
+      if (this.cursors.left.isDown) {
+        this.steeringAngle = this.steeringAngle > 0 ? this.steeringAngle - this.steeringMultiplier : 359;
+        this.car.frame = Math.floor(this.steeringAngle * 24 / 360);
+      } else if (this.cursors.right.isDown) {
+        this.steeringAngle = this.steeringAngle < 359 ? this.steeringAngle + this.steeringMultiplier : 0;
+        this.car.frame = Math.floor(this.steeringAngle * 24 / 360);
+      }
     },
 
     onInputDown: function () {
