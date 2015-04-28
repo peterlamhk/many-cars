@@ -50,12 +50,22 @@
       // this.player.scale.y = scale * 0.6;
 
       if (this.cursors.left.isDown) {
-        this.steeringAngle = this.steeringAngle > 0 ? this.steeringAngle - this.steeringMultiplier : 359;
+        if (this.currentSpeed >= 0) {
+          this.steeringAngle = this.steeringAngle > 0 ? this.steeringAngle - this.steeringMultiplier : 359;
+        } else {
+          this.steeringAngle = this.steeringAngle < 359 ? this.steeringAngle + this.steeringMultiplier : 0;
+        }
         this.car.frame = Math.floor(this.steeringAngle * 24 / 360);
       } else if (this.cursors.right.isDown) {
-        this.steeringAngle = this.steeringAngle < 359 ? this.steeringAngle + this.steeringMultiplier : 0;
+        if (this.currentSpeed >= 0) {
+          this.steeringAngle = this.steeringAngle < 359 ? this.steeringAngle + this.steeringMultiplier : 0;
+        } else {
+          this.steeringAngle = this.steeringAngle > 0 ? this.steeringAngle - this.steeringMultiplier : 359;
+        }
         this.car.frame = Math.floor(this.steeringAngle * 24 / 360);
-      } else if (this.cursors.up.isDown) {
+      }
+
+      if (this.cursors.up.isDown) {
         if (this.currentSpeed < 150) {
           this.currentSpeed += 4;
         }
@@ -68,9 +78,7 @@
         } else if (this.backwardSpeed > -100){
           this.backwardSpeed -= 4;
         }
-      }
-
-      if (!this.cursors.up.isDown && !this.cursors.down.isDown){
+      } else {
         if (this.currentSpeed > 2) {
           this.currentSpeed -= 2;
           this.backwardSpeed -= 2;
