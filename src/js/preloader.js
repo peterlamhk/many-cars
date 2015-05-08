@@ -20,7 +20,8 @@
     loadResources: function () {
       this.load.image('player', 'assets/player.png');
       this.load.bitmapFont('minecraftia', 'assets/minecraftia.png', 'assets/minecraftia.xml');
-      this.load.atlas('cars', 'assets/cars.png', 'assets/cars.json');
+      this.load.atlas('cars', 'assets/cars_base.png', 'assets/cars_base.json');
+      this.load.atlas('cars_cover', 'assets/cars_cover.png', 'assets/cars_cover.json');
     },
 
     create: function () {
