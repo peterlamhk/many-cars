@@ -1,8 +1,7 @@
 window.onload = function () {
   'use strict';
 
-  var game
-    , ns = window['drift-runners'];
+  var game, ns = window['drift-runners'];
 
   game = new Phaser.Game(640, 480, Phaser.AUTO, 'drift-runners-game');
   game.state.add('boot', ns.Boot);
