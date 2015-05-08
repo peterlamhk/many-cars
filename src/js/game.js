@@ -17,28 +17,24 @@
 
     create: function() {
       var x = this.game.width / 2,
-        y = this.game.height / 2;
+          y = this.game.height / 2;
 
       // this.player = this.add.sprite(x, y, 'player');
       // this.player.anchor.setTo(0.5, 0.5);
       // this.input.onDown.add(this.onInputDown, this);
 
       this.car = this.add.sprite(x, y, 'cars');
-      this.car.cover = this.add.sprite(x, y, 'cars_cover');
+      this.car.cover = this.add.sprite(0, 0, 'cars_cover');
       this.car.anchor.set(0.5);
       this.car.cover.anchor.set(0.5);
+      this.car.addChild(this.car.cover);
 
       // this.car.animations.add('turn', Phaser.Animation.generateFrameNames('car', 0, 23, '', 2), 5, true);
       // this.car.animations.play('turn');
-      this.car.frame = 0;
-      this.car.cover.frame = 0;
+      this.car.frame = this.car.cover.frame = 0;
 
       this.game.physics.enable(this.car, Phaser.Physics.ARCADE);
-      this.game.physics.enable(this.car.cover, Phaser.Physics.ARCADE);
       this.car.body.maxVelocity.set(400);
-      this.car.cover.body.maxVelocity.set(400);
-      this.car.body.drag.set(100);
-      this.car.cover.body.drag.set(100);
 
       this.cursors = this.game.input.keyboard.createCursorKeys();
     },
@@ -94,19 +90,19 @@
         if (angle < 0){
           angle += 360;
         }
+
         var car_frame = Math.floor(angle * (119/7*2) / 360) *7;
         if (car_frame>119){
-          this.car.scale.x = this.car.cover.scale.x = -1;
+          this.car.scale.x = -1;
           car_frame = 119*2 - car_frame;
 
         } else {
-          this.car.scale.x = this.car.cover.scale.x = 1;
+          this.car.scale.x = 1;
           if (angle > 90 && car_frame == 119){
             car_frame=112;
           }
         }
         this.car.frame = this.car.cover.frame = car_frame;
-
       }
 
       if (this.cursors.up.isDown) {
@@ -129,10 +125,8 @@
 
           if (this.currentSpeed >= 0) {
             this.game.physics.arcade.velocityFromAngle(this.steeringAngle, this.currentSpeed, this.car.body.velocity);
-            this.game.physics.arcade.velocityFromAngle(this.steeringAngle, this.currentSpeed, this.car.cover.body.velocity);
           } else {
             this.game.physics.arcade.velocityFromAngle(this.steeringAngle, this.backwardSpeed, this.car.body.velocity);
-            this.game.physics.arcade.velocityFromAngle(this.steeringAngle, this.backwardSpeed, this.car.cover.body.velocity);
           }
         }
       } else if (this.cursors.down.isDown) {
@@ -167,10 +161,8 @@
       if (!this.skiddingSpeed) {
         if (this.currentSpeed >= 0) {
           this.game.physics.arcade.velocityFromAngle(this.steeringAngle, this.currentSpeed, this.car.body.velocity);
-          this.game.physics.arcade.velocityFromAngle(this.steeringAngle, this.currentSpeed, this.car.cover.body.velocity);
         } else {
           this.game.physics.arcade.velocityFromAngle(this.steeringAngle, this.backwardSpeed, this.car.body.velocity);
-          this.game.physics.arcade.velocityFromAngle(this.steeringAngle, this.backwardSpeed, this.car.cover.body.velocity);
         }
         this.drifting = false;
       } else if (!this.drifting) {
