@@ -22,6 +22,9 @@
       this.load.bitmapFont('minecraftia', 'assets/minecraftia.png', 'assets/minecraftia.xml');
       this.load.atlas('cars', 'assets/cars_base.png', 'assets/cars_base.json');
       this.load.atlas('cars_cover', 'assets/cars_cover_2.png', 'assets/cars_cover_2.json');
+      this.load.image('track_1_1', 'assets/track_1_1.png');
+      this.load.image('track_1_2', 'assets/track_1_2.png');
+      this.load.image('track_1_3', 'assets/track_1_3.png');
     },
 
     create: function () {

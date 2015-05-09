@@ -37,6 +37,13 @@
       this.car.body.maxVelocity.set(400);
 
       this.cursors = this.game.input.keyboard.createCursorKeys();
+
+      this.track1a = this.add.sprite(x, y, 'track_1_1');
+      this.track1a.anchor.set(0.5);
+      this.track1b = this.add.sprite(x, y, 'track_1_2');
+      this.track1b.anchor.set(0.5);
+      this.track1c = this.add.sprite(x, y, 'track_1_3');
+      this.track1c.anchor.set(0.5);
     },
 
     update: function() {
@@ -91,18 +98,18 @@
           angle += 360;
         }
 
-        var car_frame = Math.floor(angle * (119/7*2) / 360) *7;
-        if (car_frame>119){
+        var carFrame = Math.floor(angle * (119/7*2) / 360) *7;
+        if (carFrame>119){
           this.car.scale.x = -1;
-          car_frame = 119*2 - car_frame;
+          carFrame = 119*2 - carFrame;
 
         } else {
           this.car.scale.x = 1;
-          if (angle > 90 && car_frame == 119){
-            car_frame=112;
+          if (angle > 90 && carFrame === 119){
+            carFrame=112;
           }
         }
-        this.car.frame = this.car.cover.frame = car_frame;
+        this.car.frame = this.car.cover.frame = carFrame;
       }
 
       if (this.cursors.up.isDown) {
