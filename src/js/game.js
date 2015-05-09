@@ -91,18 +91,18 @@
           angle += 360;
         }
 
-        var car_frame = Math.floor(angle * (119/7*2) / 360) *7;
-        if (car_frame>119){
+        var frame = Math.floor(angle * (119/7*2) / 360) *7;
+        if (frame>119){
           this.car.scale.x = -1;
-          car_frame = 119*2 - car_frame;
+          frame = 119*2 - frame;
 
         } else {
           this.car.scale.x = 1;
-          if (angle > 90 && car_frame == 119){
-            car_frame=112;
+          if (angle > 90 && frame === 119){
+            frame=112;
           }
         }
-        this.car.frame = this.car.cover.frame = car_frame;
+        this.car.frame = this.car.cover.frame = frame;
       }
 
       if (this.cursors.up.isDown) {
