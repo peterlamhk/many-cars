@@ -23,6 +23,13 @@
       // this.player.anchor.setTo(0.5, 0.5);
       // this.input.onDown.add(this.onInputDown, this);
 
+      this.track1a = this.add.sprite(x, y, 'track_1_1');
+      this.track1a.anchor.set(0.5);
+      this.track1b = this.add.sprite(x, y, 'track_1_2');
+      this.track1b.anchor.set(0.5);
+      this.track1c = this.add.sprite(x, y, 'track_1_3');
+      this.track1c.anchor.set(0.5);
+
       this.car = this.add.sprite(x, y, 'cars');
       this.car.cover = this.add.sprite(0, 0, 'cars_cover');
       this.car.anchor.set(0.5);
@@ -38,12 +45,6 @@
 
       this.cursors = this.game.input.keyboard.createCursorKeys();
 
-      this.track1a = this.add.sprite(x, y, 'track_1_1');
-      this.track1a.anchor.set(0.5);
-      this.track1b = this.add.sprite(x, y, 'track_1_2');
-      this.track1b.anchor.set(0.5);
-      this.track1c = this.add.sprite(x, y, 'track_1_3');
-      this.track1c.anchor.set(0.5);
     },
 
     update: function() {
