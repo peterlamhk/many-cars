@@ -19,10 +19,6 @@
       var x = this.game.width / 2,
           y = this.game.height / 2;
 
-      // this.player = this.add.sprite(x, y, 'player');
-      // this.player.anchor.setTo(0.5, 0.5);
-      // this.input.onDown.add(this.onInputDown, this);
-
       this.track1c = this.add.image(0, 0, 'track1c');
       this.track1bL = this.add.image(0, 0, 'track1bL');
       this.track1bR = this.add.image(480, 0, 'track1bR');
@@ -35,8 +31,6 @@
       this.car.cover.anchor.set(0.5);
       this.car.addChild(this.car.cover);
 
-      // this.car.animations.add('turn', Phaser.Animation.generateFrameNames('car', 0, 23, '', 2), 5, true);
-      // this.car.animations.play('turn');
       this.car.frame = this.car.cover.frame = 0;
 
       this.game.physics.enable(this.car, Phaser.Physics.ARCADE);
@@ -46,22 +40,6 @@
     },
 
     update: function() {
-      // var x, y, cx, cy, dx, dy, angle, scale;
-
-      // x = this.input.position.x;
-      // y = this.input.position.y;
-      // cx = this.world.centerX;
-      // cy = this.world.centerY;
-
-      // angle = Math.atan2(y - cy, x - cx) * (180 / Math.PI);
-      // this.player.angle = angle;
-
-      // dx = x - cx;
-      // dy = y - cy;
-      // scale = Math.sqrt(dx * dx + dy * dy) / 100;
-
-      // this.player.scale.x = scale * 0.6;
-      // this.player.scale.y = scale * 0.6;
 
       if (this.currentSpeed > 250) {
         this.baseSpeed = 0.25;
