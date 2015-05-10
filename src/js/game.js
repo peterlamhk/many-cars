@@ -23,11 +23,19 @@
       // this.player.anchor.setTo(0.5, 0.5);
       // this.input.onDown.add(this.onInputDown, this);
 
+      this.track1c = this.add.image(0, 0, 'track1c');
+      this.track1bL = this.add.image(0, 0, 'track1bL');
+      this.track1bR = this.add.image(480, 0, 'track1bR');
+      this.track1aL = this.add.image(0, 0, 'track1aL');
+      this.track1aR = this.add.image(480, 0, 'track1aR');
+
       this.car = this.add.sprite(x, y, 'cars');
       this.car.cover = this.add.sprite(0, 0, 'cars_cover');
       this.car.anchor.set(0.5);
       this.car.cover.anchor.set(0.5);
       this.car.addChild(this.car.cover);
+
+      this.car.cover.tint = 0x00FF00;
 
       // this.car.animations.add('turn', Phaser.Animation.generateFrameNames('car', 0, 23, '', 2), 5, true);
       // this.car.animations.play('turn');
