@@ -8,10 +8,9 @@ html, body {
   height: 100%;
   overflow: hidden;
   background: #000;
+  margin: 0px;
 }
 
 .game {
-  width: 640px;
-  height: 480px;
-  margin: 20px auto;
+  margin: 0px;
 }
