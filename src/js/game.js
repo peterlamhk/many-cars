@@ -35,8 +35,6 @@
       this.car.cover.anchor.set(0.5);
       this.car.addChild(this.car.cover);
 
-      this.car.cover.tint = 0x00FF00;
-
       // this.car.animations.add('turn', Phaser.Animation.generateFrameNames('car', 0, 23, '', 2), 5, true);
       // this.car.animations.play('turn');
       this.car.frame = this.car.cover.frame = 0;
