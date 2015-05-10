@@ -27,6 +27,8 @@
       this.load.image('track1bL', 'assets/track1bL.png');
       this.load.image('track1bR', 'assets/track1bR.png');
       this.load.image('track1c', 'assets/track1c.png');
+
+      this.load.physics('physicsData', 'assets/tracks.json');
     },
 
     create: function () {
@@ -35,7 +37,8 @@
 
     update: function () {
       if (!!this.ready) {
-        this.game.state.start('menu');
+        // this.game.state.start('menu');
+        this.game.state.start('game');
       }
     },
 
