@@ -60,7 +60,7 @@
       this.game.physics.p2.updateBoundsCollisionGroup();
 
       this.track1 = this.add.sprite(480, 270, 'track1');
-      this.game.physics.p2.enable([ this.track1 ], true);
+      this.game.physics.p2.enable([ this.track1 ]);
 
       this.track1.body.static = true;
 
@@ -72,8 +72,8 @@
 
       this.car.frame = 0;
 
-      this.game.physics.p2.enable(this.car, true);
-      this.car.body.setCircle(14);
+      this.game.physics.p2.enable(this.car);
+      this.car.body.setCircle(10);
       this.car.body.data.gravityScale = 0;
       this.car.body.damping = 0.01;
 
