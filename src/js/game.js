@@ -14,6 +14,15 @@
   }
 
   Game.prototype = {
+    velocityFromAngle: function (angle, speed, point) {
+
+      point = point || new Phaser.Point();
+
+      point.x = Math.cos(this.game.math.degToRad(angle)) * speed;
+      point.y = Math.sin(this.game.math.degToRad(angle)) * speed;
+
+      return point;
+    },
 
     click: function(pointer) {
       var result;
@@ -39,6 +48,8 @@
           y = this.game.height / 2;
 
       this.game.physics.startSystem(Phaser.Physics.P2JS);
+      this.game.physics.p2.gravity.y = 0;
+      this.game.physics.p2.gravity.x = 0;
 
       this.track1c = this.add.image(0, 0, 'track1c');
       this.track1bL = this.add.sprite(240, 270, 'track1bL');
@@ -70,7 +81,17 @@
       // this.car.body.maxVelocity.set(400);
       this.game.physics.p2.enable(this.car, true);
       this.car.body.setCircle(14);
-      this.car.body.static = true;
+      // this.car.body.static = true;
+      this.car.body.data.gravityScale = 0;
+
+      var spriteMaterial = this.game.physics.p2.createMaterial('spriteMaterial');
+      var worldMaterial = this.game.physics.p2.createMaterial('worldMaterial');
+      var contactMaterial = this.game.physics.p2.createContactMaterial(spriteMaterial, worldMaterial, { restitution: 1.0 });
+
+      this.game.physics.p2.setWorldMaterial(worldMaterial);
+      this.car.body.setMaterial(spriteMaterial);
+      this.car.body.collideWorldBounds = false;
+
 
       this.cursors = this.game.input.keyboard.createCursorKeys();
       this.game.input.onDown.add(this.click, this);
@@ -145,9 +166,9 @@
           }
 
           if (this.currentSpeed >= 0) {
-            // this.game.physics.arcade.velocityFromAngle(this.steeringAngle, this.currentSpeed, this.car.body.velocity);
+            this.velocityFromAngle(this.steeringAngle, this.currentSpeed, this.car.body.velocity);
           } else {
-            // this.game.physics.arcade.velocityFromAngle(this.steeringAngle, this.backwardSpeed, this.car.body.velocity);
+            this.velocityFromAngle(this.steeringAngle, this.backwardSpeed, this.car.body.velocity);
           }
         }
       } else if (this.cursors.down.isDown) {
@@ -181,9 +202,9 @@
 
       if (!this.skiddingSpeed) {
         if (this.currentSpeed >= 0) {
-          // this.game.physics.arcade.velocityFromAngle(this.steeringAngle, this.currentSpeed, this.car.body.velocity);
+          this.velocityFromAngle(this.steeringAngle, this.currentSpeed, this.car.body.velocity);
         } else {
-          // this.game.physics.arcade.velocityFromAngle(this.steeringAngle, this.backwardSpeed, this.car.body.velocity);
+          this.velocityFromAngle(this.steeringAngle, this.backwardSpeed, this.car.body.velocity);
         }
         this.drifting = false;
       } else if (!this.drifting) {
