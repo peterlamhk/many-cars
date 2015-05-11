@@ -21,18 +21,22 @@
       this.load.image('player', 'assets/player.png');
       this.load.bitmapFont('minecraftia', 'assets/minecraftia.png', 'assets/minecraftia.xml');
       this.load.atlas('cars', 'assets/car_spritesheet.png', 'assets/car_spritesheet.json');
+      this.load.image('track1', 'assets/track1.png');
+
+      this.load.physics('physicsData', 'assets/physicsData.json');
     },
-    
+
     create: function () {
       this.asset.cropEnabled = false;
     },
 
     update: function () {
       if (!!this.ready) {
-        this.game.state.start('menu');
+        // this.game.state.start('menu');
+        this.game.state.start('game');
       }
     },
-    
+
     onLoadComplete: function () {
       this.ready = true;
     }

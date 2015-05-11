@@ -14,44 +14,97 @@
   }
 
   Game.prototype = {
+    hitTrack: function(body1, body2) {
+      this.currentSpeed -= 50;
+    },
+    velocityFromAngle: function (angle, speed, point) {
+
+      point = point || new Phaser.Point();
+
+      point.x = Math.cos(this.game.math.degToRad(angle)) * speed;
+      point.y = Math.sin(this.game.math.degToRad(angle)) * speed;
+
+      return point;
+    },
+
+    click: function(pointer) {
+      var result;
+      var bodies = this.game.physics.p2.hitTest(pointer.position, [ this.track1aL, this.track1aR, this.track1bL, this.track1bR ]);
+
+      if (bodies.length === 0) {
+        result = "You didn't click a Body";
+      } else {
+        result = "You clicked: ";
+        for (var i = 0; i < bodies.length; i++) {
+          result = result + bodies[i].parent.sprite.key;
+
+          if (i < bodies.length - 1) {
+              result = result + ', ';
+            }
+        }
+      }
+      console.log(result);
+    },
 
     create: function() {
       var x = this.game.width / 2,
           y = this.game.height / 2;
 
-      // this.player = this.add.sprite(x, y, 'player');
-      // this.player.anchor.setTo(0.5, 0.5);
-      // this.input.onDown.add(this.onInputDown, this);
+      this.game.physics.startSystem(Phaser.Physics.P2JS);
+      this.game.physics.p2.setImpactEvents(true);
+      this.game.physics.p2.gravity.y = 0;
+      this.game.physics.p2.gravity.x = 0;
+
+      var carCollisionGroup = this.game.physics.p2.createCollisionGroup();
+      var trackCollisionGroup = this.game.physics.p2.createCollisionGroup();
+      this.game.physics.p2.updateBoundsCollisionGroup();
+
+      this.track1 = this.add.sprite(480, 270, 'track1');
+      this.game.physics.p2.enable([ this.track1 ]);
+
+      this.track1.body.static = true;
+
+      this.track1.body.clearShapes();
+      this.track1.body.loadPolygon('physicsData', 'track1');
 
       this.car = this.add.sprite(x, y, 'cars');
       this.car.anchor.set(0.5);
 
-      // this.car.animations.add('turn', Phaser.Animation.generateFrameNames('car', 0, 23, '', 2), 5, true);
-      // this.car.animations.play('turn');
       this.car.frame = 0;
 
-      this.game.physics.enable(this.car, Phaser.Physics.ARCADE);
-      this.car.body.maxVelocity.set(400);
+      this.game.physics.p2.enable(this.car);
+      this.car.body.setCircle(10);
+      this.car.body.data.gravityScale = 0;
+      this.car.body.damping = 0.01;
+
+      var carMaterial = this.game.physics.p2.createMaterial('carMaterial');
+      var trackMaterial = this.game.physics.p2.createMaterial('trackMaterial');
+
+      this.car.body.setMaterial(carMaterial);
+      this.car.body.fixedRotation = true;
+
+      this.track1.body.setMaterial(trackMaterial);
+
+      var contactMaterial = this.game.physics.p2.createContactMaterial(carMaterial, trackMaterial);
+      contactMaterial.friction = 0.3;
+      contactMaterial.restitution = 0.0;
+      contactMaterial.stiffness = 1e7;
+      contactMaterial.relaxation = 3;
+      contactMaterial.frictionStiffness = 1e7;
+      contactMaterial.frictionRelaxation = 3;
+      contactMaterial.surfaceVelocity = 0;
+
+      this.car.body.setCollisionGroup(carCollisionGroup);
+      this.car.body.collides([carCollisionGroup, trackCollisionGroup]);
+      this.track1.body.setCollisionGroup(trackCollisionGroup);
+      this.track1.body.collides(carCollisionGroup, this.hitTrack, this);
+
 
       this.cursors = this.game.input.keyboard.createCursorKeys();
+      this.game.input.onDown.add(this.click, this);
     },
 
     update: function() {
-      // var x, y, cx, cy, dx, dy, angle, scale;
-      // x = this.input.position.x;
-      // y = this.input.position.y;
-      // cx = this.world.centerX;
-      // cy = this.world.centerY;
-
-      // angle = Math.atan2(y - cy, x - cx) * (180 / Math.PI);
-      // this.player.angle = angle;
-
-      // dx = x - cx;
-      // dy = y - cy;
-      // scale = Math.sqrt(dx * dx + dy * dy) / 100;
-
-      // this.player.scale.x = scale * 0.6;
-      // this.player.scale.y = scale * 0.6;
 
       if (this.currentSpeed > 250) {
         this.baseSpeed = 0.25;
@@ -119,9 +172,9 @@
           }
 
           if (this.currentSpeed >= 0) {
-            this.game.physics.arcade.velocityFromAngle(this.steeringAngle, this.currentSpeed, this.car.body.velocity);
+            this.velocityFromAngle(this.steeringAngle, this.currentSpeed, this.car.body.velocity);
           } else {
-            this.game.physics.arcade.velocityFromAngle(this.steeringAngle, this.backwardSpeed, this.car.body.velocity);
+            this.velocityFromAngle(this.steeringAngle, this.backwardSpeed, this.car.body.velocity);
           }
         }
       } else if (this.cursors.down.isDown) {
@@ -155,9 +208,9 @@
 
       if (!this.skiddingSpeed) {
         if (this.currentSpeed >= 0) {
-          this.game.physics.arcade.velocityFromAngle(this.steeringAngle, this.currentSpeed, this.car.body.velocity);
+          this.velocityFromAngle(this.steeringAngle, this.currentSpeed, this.car.body.velocity);
         } else {
-          this.game.physics.arcade.velocityFromAngle(this.steeringAngle, this.backwardSpeed, this.car.body.velocity);
+          this.velocityFromAngle(this.steeringAngle, this.backwardSpeed, this.car.body.velocity);
         }
         this.drifting = false;
       } else if (!this.drifting) {
