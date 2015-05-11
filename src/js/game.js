@@ -14,6 +14,9 @@
   }
 
   Game.prototype = {
+    hitTrack: function(body1, body2) {
+      this.currentSpeed -= 50;
+    },
     velocityFromAngle: function (angle, speed, point) {
 
       point = point || new Phaser.Point();
@@ -48,8 +51,13 @@
           y = this.game.height / 2;
 
       this.game.physics.startSystem(Phaser.Physics.P2JS);
+      this.game.physics.p2.setImpactEvents(true);
       this.game.physics.p2.gravity.y = 0;
       this.game.physics.p2.gravity.x = 0;
+
+      var carCollisionGroup = this.game.physics.p2.createCollisionGroup();
+      var trackCollisionGroup = this.game.physics.p2.createCollisionGroup();
+      this.game.physics.p2.updateBoundsCollisionGroup();
 
       this.track1 = this.add.sprite(480, 270, 'track1');
       this.game.physics.p2.enable([ this.track1 ], true);
@@ -64,21 +72,32 @@
 
       this.car.frame = 0;
 
-      // this.game.physics.enable(this.car, Phaser.Physics.ARCADE);
-      // this.car.body.maxVelocity.set(400);
       this.game.physics.p2.enable(this.car, true);
       this.car.body.setCircle(14);
-      // this.car.body.static = true;
       this.car.body.data.gravityScale = 0;
+      this.car.body.damping = 0.01;
 
-      var spriteMaterial = this.game.physics.p2.createMaterial('spriteMaterial');
-      var worldMaterial = this.game.physics.p2.createMaterial('worldMaterial');
-      var contactMaterial = this.game.physics.p2.createContactMaterial(spriteMaterial, worldMaterial, { restitution: 1.0 });
+      var carMaterial = this.game.physics.p2.createMaterial('carMaterial');
+      var trackMaterial = this.game.physics.p2.createMaterial('trackMaterial');
 
-      this.game.physics.p2.setWorldMaterial(worldMaterial);
-      this.car.body.setMaterial(spriteMaterial);
-      // this.car.body.collideWorldBounds = false;
+      this.car.body.setMaterial(carMaterial);
       this.car.body.fixedRotation = true;
+
+      this.track1.body.setMaterial(trackMaterial);
+
+      var contactMaterial = this.game.physics.p2.createContactMaterial(carMaterial, trackMaterial);
+      contactMaterial.friction = 0.3;
+      contactMaterial.restitution = 0.0;
+      contactMaterial.stiffness = 1e7;
+      contactMaterial.relaxation = 3;
+      contactMaterial.frictionStiffness = 1e7;
+      contactMaterial.frictionRelaxation = 3;
+      contactMaterial.surfaceVelocity = 0;
+
+      this.car.body.setCollisionGroup(carCollisionGroup);
+      this.car.body.collides([carCollisionGroup, trackCollisionGroup]);
+      this.track1.body.setCollisionGroup(trackCollisionGroup);
+      this.track1.body.collides(carCollisionGroup, this.hitTrack, this);
 
 
       this.cursors = this.game.input.keyboard.createCursorKeys();
