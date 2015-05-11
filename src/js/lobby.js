@@ -62,7 +62,11 @@
 
     onDown: function () {
       this.game.session = this.sessionToString();
-      this.game.state.start('control');
+      var that = this;
+      remote.registerRoom(function(playerId) {
+        that.game.playerid = playerId;
+        that.game.state.start('control');
+      });
     },
 
     sessionToString: function () {

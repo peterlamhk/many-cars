@@ -1,4 +1,11 @@
+# OSX system files
 .DS_Store
+.AppleDouble
+.LSOverride
+
+# OSX thumbnails
+._*
+
 *.db
 node_modules/
 bower_components/
