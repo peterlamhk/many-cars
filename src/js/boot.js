@@ -13,8 +13,6 @@
       this.game.input.maxPointers = 1;
 
       this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-      this.game.scale.minWidth =  640;
-      this.game.scale.minHeight = 480;
       this.game.scale.maxWidth = 1280;
       this.game.scale.maxHeight = 720;
       this.game.scale.forceOrientation(true);
