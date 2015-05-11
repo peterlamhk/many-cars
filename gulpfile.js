@@ -8,7 +8,7 @@ var gulp = require('gulp')
   , processhtml = require('gulp-processhtml')
   , jshint = require('gulp-jshint')
   , uglify = require('gulp-uglify')
-  , server = require('gulp-express')
+  , gls = require('gulp-live-server')
   , paths;
 
 paths = {
@@ -77,16 +77,14 @@ gulp.task('lint', function() {
     .on('error', gutil.log);
 });
 
-gulp.task('server', function () {
-  server.run(['app.js']);
+gulp.task('serve', function () {
+  var server = gls.new('app.js');
+  server.start();
 
   gulp.watch(paths.js, ['lint']);
   gulp.watch(['./src/index.html', paths.css, paths.js], server.notify);
-  gulp.watch(['app.js'], function(event) {
-    server.run();
-    server.notify(event);
-  });
+  gulp.watch('app.js', server.start);
 });
 
-gulp.task('default', ['server']);
+gulp.task('default', ['serve']);
 gulp.task('build', ['copy-assets', 'copy-vendor', 'uglify', 'minifycss', 'processhtml', 'minifyhtml']);

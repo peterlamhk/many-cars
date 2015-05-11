@@ -140,7 +140,7 @@
           angle += 360;
         }
 
-        var frame = Math.floor(angle * (17*2) / 360);
+        var frame = Math.floor(angle * (16*2) / 360);
         if (frame>16){
           this.car.scale.x = -1;
           frame = 16*2 - frame;
