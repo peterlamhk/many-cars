@@ -1,1 +1,148 @@
-{  "frames": [{    "filename": "car00",    "frame": {      "x": 0,      "y": 38,      "w": 80,      "h": 27    },    "rotated": false,    "trimmed": false,    "spriteSourceSize": {      "x": 0,      "y": 0,      "w": 80,      "h": 27    },    "sourceSize": {      "w": 80,      "h": 27    }  }, {    "filename": "car01",    "frame": {      "x": 0,      "y": 99,      "w": 79,      "h": 31    },    "rotated": false,    "trimmed": false,    "spriteSourceSize": {      "x": 0,      "y": 0,      "w": 79,      "h": 31    },    "sourceSize": {      "w": 79,      "h": 31    }  }, {    "filename": "car02",    "frame": {      "x": 167,      "y": 0,      "w": 61,      "h": 37    },    "rotated": false,    "trimmed": false,    "spriteSourceSize": {      "x": 0,      "y": 0,      "w": 61,      "h": 37    },    "sourceSize": {      "w": 61,      "h": 37    }  }, {    "filename": "car03",    "frame": {      "x": 120,      "y": 0,      "w": 46,      "h": 36    },    "rotated": false,    "trimmed": false,    "spriteSourceSize": {      "x": 0,      "y": 0,      "w": 46,      "h": 36    },    "sourceSize": {      "w": 46,      "h": 36    }  }, {    "filename": "car04",    "frame": {      "x": 0,      "y": 0,      "w": 42,      "h": 37    },    "rotated": false,    "trimmed": false,    "spriteSourceSize": {      "x": 0,      "y": 0,      "w": 42,      "h": 37    },    "sourceSize": {      "w": 42,      "h": 37    }  }, {    "filename": "car05",    "frame": {      "x": 81,      "y": 0,      "w": 38,      "h": 37    },    "rotated": false,    "trimmed": false,    "spriteSourceSize": {      "x": 0,      "y": 0,      "w": 38,      "h": 37    },    "sourceSize": {      "w": 38,      "h": 37    }  }, {    "filename": "car06",    "frame": {      "x": 81,      "y": 73,      "w": 36,      "h": 37    },    "rotated": false,    "trimmed": false,    "spriteSourceSize": {      "x": 0,      "y": 0,      "w": 36,      "h": 37    },    "sourceSize": {      "w": 36,      "h": 37    }  }, {    "filename": "car07",    "frame": {      "x": 81,      "y": 111,      "w": 38,      "h": 37    },    "rotated": false,    "trimmed": false,    "spriteSourceSize": {      "x": 0,      "y": 0,      "w": 38,      "h": 37    },    "sourceSize": {      "w": 38,      "h": 37    }  }, {    "filename": "car08",    "frame": {      "x": 167,      "y": 112,      "w": 42,      "h": 37    },    "rotated": false,    "trimmed": false,    "spriteSourceSize": {      "x": 0,      "y": 0,      "w": 42,      "h": 37    },    "sourceSize": {      "w": 42,      "h": 37    }  }, {    "filename": "car09",    "frame": {      "x": 167,      "y": 150,      "w": 46,      "h": 36    },    "rotated": false,    "trimmed": false,    "spriteSourceSize": {      "x": 0,      "y": 0,      "w": 46,      "h": 36    },    "sourceSize": {      "w": 46,      "h": 36    }  }, {    "filename": "car10",    "frame": {      "x": 167,      "y": 38,      "w": 61,      "h": 37    },    "rotated": false,    "trimmed": false,    "spriteSourceSize": {      "x": 0,      "y": 0,      "w": 61,      "h": 37    },    "sourceSize": {      "w": 61,      "h": 37    }  }, {    "filename": "car11",    "frame": {      "x": 81,      "y": 159,      "w": 79,      "h": 31    },    "rotated": false,    "trimmed": false,    "spriteSourceSize": {      "x": 0,      "y": 0,      "w": 79,      "h": 31    },    "sourceSize": {      "w": 79,      "h": 31    }  }, {    "filename": "car12",    "frame": {      "x": 0,      "y": 131,      "w": 80,      "h": 27    },    "rotated": false,    "trimmed": false,    "spriteSourceSize": {      "x": 0,      "y": 0,      "w": 80,      "h": 27    },    "sourceSize": {      "w": 80,      "h": 27    }  }, {    "filename": "car13",    "frame": {      "x": 0,      "y": 66,      "w": 80,      "h": 32    },    "rotated": false,    "trimmed": false,    "spriteSourceSize": {      "x": 0,      "y": 0,      "w": 80,      "h": 32    },    "sourceSize": {      "w": 80,      "h": 32    }  }, {    "filename": "car14",    "frame": {      "x": 0,      "y": 192,      "w": 65,      "h": 35    },    "rotated": false,    "trimmed": false,    "spriteSourceSize": {      "x": 0,      "y": 0,      "w": 65,      "h": 35    },    "sourceSize": {      "w": 65,      "h": 35    }  }, {    "filename": "car15",    "frame": {      "x": 167,      "y": 76,      "w": 50,      "h": 35    },    "rotated": false,    "trimmed": false,    "spriteSourceSize": {      "x": 0,      "y": 0,      "w": 50,      "h": 35    },    "sourceSize": {      "w": 50,      "h": 35    }  }, {    "filename": "car16",    "frame": {      "x": 66,      "y": 192,      "w": 45,      "h": 35    },    "rotated": false,    "trimmed": false,    "spriteSourceSize": {      "x": 0,      "y": 0,      "w": 45,      "h": 35    },    "sourceSize": {      "w": 45,      "h": 35    }  }, {    "filename": "car17",    "frame": {      "x": 120,      "y": 108,      "w": 41,      "h": 34    },    "rotated": false,    "trimmed": false,    "spriteSourceSize": {      "x": 0,      "y": 0,      "w": 41,      "h": 34    },    "sourceSize": {      "w": 41,      "h": 34    }  }, {    "filename": "car18",    "frame": {      "x": 81,      "y": 38,      "w": 36,      "h": 34    },    "rotated": false,    "trimmed": false,    "spriteSourceSize": {      "x": 0,      "y": 0,      "w": 36,      "h": 34    },    "sourceSize": {      "w": 36,      "h": 34    }  }, {    "filename": "car19",    "frame": {      "x": 120,      "y": 73,      "w": 41,      "h": 34    },    "rotated": false,    "trimmed": false,    "spriteSourceSize": {      "x": 0,      "y": 0,      "w": 41,      "h": 34    },    "sourceSize": {      "w": 41,      "h": 34    }  }, {    "filename": "car20",    "frame": {      "x": 120,      "y": 37,      "w": 45,      "h": 35    },    "rotated": false,    "trimmed": false,    "spriteSourceSize": {      "x": 0,      "y": 0,      "w": 45,      "h": 35    },    "sourceSize": {      "w": 45,      "h": 35    }  }, {    "filename": "car21",    "frame": {      "x": 178,      "y": 192,      "w": 50,      "h": 35    },    "rotated": false,    "trimmed": false,    "spriteSourceSize": {      "x": 0,      "y": 0,      "w": 50,      "h": 35    },    "sourceSize": {      "w": 50,      "h": 35    }  }, {    "filename": "car22",    "frame": {      "x": 112,      "y": 192,      "w": 65,      "h": 35    },    "rotated": false,    "trimmed": false,    "spriteSourceSize": {      "x": 0,      "y": 0,      "w": 65,      "h": 35    },    "sourceSize": {      "w": 65,      "h": 35    }  }, {    "filename": "car23",    "frame": {      "x": 0,      "y": 159,      "w": 80,      "h": 32    },    "rotated": false,    "trimmed": false,    "spriteSourceSize": {      "x": 0,      "y": 0,      "w": 80,      "h": 32    },    "sourceSize": {      "w": 80,      "h": 32    }  }],  "meta": {    "app": "http://www.leshylabs.com/apps/sstool/",    "version": "Leshy SpriteSheet Tool v0.8.1",    "size": {      "w": 228,      "h": 227    },    "scale": 1  }}
+{"frames": [
+
+{
+	"filename": "00.png",
+	"frame": {"x":36,"y":145,"w":18,"h":23},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":7,"y":5,"w":18,"h":23},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "01.png",
+	"frame": {"x":36,"y":90,"w":22,"h":23},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":5,"y":5,"w":22,"h":23},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "02.png",
+	"frame": {"x":36,"y":33,"w":26,"h":24},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":3,"y":4,"w":26,"h":24},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "03.png",
+	"frame": {"x":34,"y":200,"w":28,"h":23},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":5,"w":28,"h":23},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "04.png",
+	"frame": {"x":2,"y":198,"w":30,"h":23},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":5,"w":30,"h":23},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "05.png",
+	"frame": {"x":2,"y":56,"w":32,"h":23},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":5,"w":32,"h":23},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "06.png",
+	"frame": {"x":2,"y":104,"w":32,"h":20},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":7,"w":32,"h":20},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "07.png",
+	"frame": {"x":2,"y":126,"w":32,"h":19},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":7,"w":32,"h":19},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "08.png",
+	"frame": {"x":2,"y":147,"w":31,"h":19},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":6,"w":31,"h":19},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "09.png",
+	"frame": {"x":2,"y":81,"w":32,"h":21},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":5,"w":32,"h":21},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "10.png",
+	"frame": {"x":2,"y":30,"w":32,"h":24},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":3,"w":32,"h":24},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "11.png",
+	"frame": {"x":2,"y":2,"w":32,"h":26},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":2,"w":32,"h":26},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "12.png",
+	"frame": {"x":2,"y":168,"w":30,"h":28},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":1,"w":30,"h":28},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "13.png",
+	"frame": {"x":34,"y":170,"w":28,"h":28},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":1,"w":28,"h":28},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "14.png",
+	"frame": {"x":36,"y":2,"w":26,"h":29},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":3,"y":0,"w":26,"h":29},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "15.png",
+	"frame": {"x":36,"y":59,"w":22,"h":29},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":5,"y":0,"w":22,"h":29},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "16.png",
+	"frame": {"x":36,"y":115,"w":18,"h":28},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":7,"y":0,"w":18,"h":28},
+	"sourceSize": {"w":32,"h":32}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "cars.png",
+	"format": "RGBA8888",
+	"size": {"w":64,"h":225},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:7cb6ee581dd271d6edec6223881d60c1:97cbca5593c3f2707a9e4910e60cdd60:76643c3195b82b5daf4c2278b6d42f60$"
+}
+}
