@@ -1,9 +1,12 @@
 var express = require('express'),
     app = express();
 
+app.use(require('connect-livereload')());
+
 var throttle = 100; // minimum time between moves (ms)
 
 // serve the game as static files in dist/
+// app.use(express.static('dist'));
 app.use(express.static('src'));
 
 // start listening on port 3000
