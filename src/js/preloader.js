@@ -20,10 +20,9 @@
     loadResources: function () {
       this.load.image('player', 'assets/player.png');
       this.load.bitmapFont('minecraftia', 'assets/minecraftia.png', 'assets/minecraftia.xml');
-      this.load.atlas('cars', 'assets/cars_base.png', 'assets/cars_base.json');
-      this.load.atlas('cars_cover', 'assets/cars_cover_2.png', 'assets/cars_cover_2.json');
+      this.load.atlas('cars', 'assets/car_spritesheet.png', 'assets/car_spritesheet.json');
     },
-
+    
     create: function () {
       this.asset.cropEnabled = false;
     },
@@ -33,7 +32,7 @@
         this.game.state.start('menu');
       }
     },
-
+    
     onLoadComplete: function () {
       this.ready = true;
     }

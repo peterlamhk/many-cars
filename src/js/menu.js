@@ -25,6 +25,8 @@
       this.input.onDown.add(this.onDown, this);
       // this.titleTxt.inputEnabled = true;
       // this.titleTxt.events.onInputDown.add(this.onDown, this);
+
+      this.game.session = Math.floor((Math.random() * 9999) + 0);
     },
 
     update: function () {
@@ -32,7 +34,11 @@
     },
 
     onDown: function () {
-      this.game.state.start('lobby');
+      if (this.game.device.desktop){
+        this.game.state.start('room');
+      } else{
+        this.game.state.start('lobby');
+      }
     }
 
 

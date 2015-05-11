@@ -3,9 +3,14 @@
 
   function Room() {
     this.titleTxt = null;
-    this.playerTxt = null;
     this.startTxt = null;
+    this.playerTitle = null;
+    this.playerTxt = [];
     this.playerList = [];
+
+    this.maxPlayer = 4;
+    this.rectWidth = 50;
+    this.color = [0xFFFF00, 0x0FF00, 0xFF0000, 0x0000FF];
   }
 
   Room.prototype = {
@@ -14,17 +19,18 @@
     },
 
     create: function () {
+      var size=0, i=0;
+
       this.titleTxt = this.add.bitmapText(0, 0, 'minecraftia', 'Room ' + this.game.session );
       this.titleTxt.align = 'center';
       this.titleTxt.x = this.titleTxt.textWidth / 2;
       this.titleTxt.y = this.titleTxt.textHeight / 2;
 
-      this.playerTxt = this.add.bitmapText(0, 0, 'minecraftia', 'Player' );
+      this.playerTitle = this.add.bitmapText(0, 0, 'minecraftia', 'Game Players:' );
       this.titleTxt.align = 'left';
-      this.playerTxt.x = this.titleTxt.textWidth / 2;
-      this.playerTxt.y = this.titleTxt.y + this.titleTxt.textHeight +this.playerTxt.textHeight / 2;
-      this.updatePlayers();
-
+      this.playerTitle.x = this.titleTxt.textWidth / 2;
+      this.playerTitle.y = this.titleTxt.y + this.titleTxt.textHeight +this.playerTitle.textHeight / 2;
+      
       this.startTxt = this.add.bitmapText(0, 0, 'minecraftia', 'Start Game' );
       this.titleTxt.align = 'right';
       this.startTxt.x = this.game.width - this.startTxt.textWidth;
@@ -32,21 +38,27 @@
 
       this.startTxt.inputEnabled = true;
       this.startTxt.events.onInputDown.add(this.onStartButtonDown, this);
-    },
 
-    playersToString: function(){
-      var result = 'Players: \n';
-      if (!(this.playerList.length ===0 || this.playerList === null)){
-        var i;
-        for (i=0; i < this.playerList.length; i++){
-          result = result + '\n' + i + ' ' + this.playerList[i];
-        }
+
+      size = this.playerTitle.textHeight;
+      for (i = 0; i < this.maxPlayer; i++){
+        this.playerTxt.push(this.add.bitmapText(0, 0, 'minecraftia', 'Player '+i ));
+        this.titleTxt.align = 'left';
+        this.playerTxt[i].tint=this.color[i];
+        this.playerTxt[i].x = this.titleTxt.textWidth / 2;
+        this.playerTxt[i].y = this.playerTitle.y + 5 + this.playerTitle.textHeight * (i+1);
       }
-      return result;
+      this.updatePlayers();
     },
 
     updatePlayers: function(){
-      this.playerTxt.setText(this.playersToString());
+      var i=0;
+      for (i=0; i<this.playerList.length;i++){
+        this.playerTxt[i].setText('Player '+i);
+      }
+      for (i=i;i<this.maxPlayer;i++){
+        this.playerTxt[i].setText(' ');
+      }
     },
 
     onStartButtonDown: function(){

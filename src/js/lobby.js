@@ -62,7 +62,7 @@
 
     onDown: function () {
       this.game.session = this.sessionToString();
-      this.game.state.start('room');
+      this.game.state.start('control');
     },
 
     sessionToString: function () {

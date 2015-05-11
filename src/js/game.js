@@ -24,14 +24,11 @@
       // this.input.onDown.add(this.onInputDown, this);
 
       this.car = this.add.sprite(x, y, 'cars');
-      this.car.cover = this.add.sprite(0, 0, 'cars_cover');
       this.car.anchor.set(0.5);
-      this.car.cover.anchor.set(0.5);
-      this.car.addChild(this.car.cover);
 
       // this.car.animations.add('turn', Phaser.Animation.generateFrameNames('car', 0, 23, '', 2), 5, true);
       // this.car.animations.play('turn');
-      this.car.frame = this.car.cover.frame = 0;
+      this.car.frame = 0;
 
       this.game.physics.enable(this.car, Phaser.Physics.ARCADE);
       this.car.body.maxVelocity.set(400);
@@ -41,7 +38,6 @@
 
     update: function() {
       // var x, y, cx, cy, dx, dy, angle, scale;
-
       // x = this.input.position.x;
       // y = this.input.position.y;
       // cx = this.world.centerX;
@@ -91,18 +87,17 @@
           angle += 360;
         }
 
-        var frame = Math.floor(angle * (119/7*2) / 360) *7;
-        if (frame>119){
+        var frame = Math.floor(angle * (17*2) / 360);
+        if (frame>16){
           this.car.scale.x = -1;
-          frame = 119*2 - frame;
-
+          frame = 16*2 - frame;
         } else {
           this.car.scale.x = 1;
-          if (angle > 90 && frame === 119){
-            frame=112;
+          if (angle > 90 && frame === 16){
+            frame=16;
           }
         }
-        this.car.frame = this.car.cover.frame = frame;
+        this.car.frame = frame;
       }
 
       if (this.cursors.up.isDown) {
