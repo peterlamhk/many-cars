@@ -22,7 +22,6 @@
     "gulp-processhtml": "*",
     "gulp-jshint": "*",
     "gulp-uglify": "*",
-    "gulp-connect": "*",
     "gulp-watch": "*",
     "tiny-lr": "*",
     "del": "*"
