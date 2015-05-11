@@ -51,26 +51,13 @@
       this.game.physics.p2.gravity.y = 0;
       this.game.physics.p2.gravity.x = 0;
 
-      this.track1c = this.add.image(0, 0, 'track1c');
-      this.track1bL = this.add.sprite(240, 270, 'track1bL');
-      this.track1bR = this.add.sprite(720, 270, 'track1bR');
-      this.track1aL = this.add.sprite(240, 270, 'track1aL');
-      this.track1aR = this.add.sprite(720, 270, 'track1aR');
-      this.game.physics.p2.enable([ this.track1aL, this.track1aR, this.track1bL, this.track1bR ], true);
+      this.track1 = this.add.sprite(480, 270, 'track1');
+      this.game.physics.p2.enable([ this.track1 ], true);
 
-      this.track1bL.body.static = true;
-      this.track1bR.body.static = true;
-      this.track1aL.body.static = true;
-      this.track1aR.body.static = true;
+      this.track1.body.static = true;
 
-      this.track1bL.body.clearShapes();
-      this.track1bL.body.loadPolygon('physicsData', 'track1bL');
-      this.track1bR.body.clearShapes();
-      this.track1bR.body.loadPolygon('physicsData', 'track1bR');
-      this.track1aL.body.clearShapes();
-      this.track1aL.body.loadPolygon('physicsData', 'track1aL');
-      this.track1aR.body.clearShapes();
-      this.track1aR.body.loadPolygon('physicsData', 'track1aR');
+      this.track1.body.clearShapes();
+      this.track1.body.loadPolygon('physicsData', 'track1');
 
       this.car = this.add.sprite(x, y, 'cars');
       this.car.anchor.set(0.5);
@@ -90,7 +77,8 @@
 
       this.game.physics.p2.setWorldMaterial(worldMaterial);
       this.car.body.setMaterial(spriteMaterial);
-      this.car.body.collideWorldBounds = false;
+      // this.car.body.collideWorldBounds = false;
+      this.car.body.fixedRotation = true;
 
 
       this.cursors = this.game.input.keyboard.createCursorKeys();

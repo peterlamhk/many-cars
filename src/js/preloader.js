@@ -21,13 +21,9 @@
       this.load.image('player', 'assets/player.png');
       this.load.bitmapFont('minecraftia', 'assets/minecraftia.png', 'assets/minecraftia.xml');
       this.load.atlas('cars', 'assets/cars_base.png', 'assets/cars_base.json');
-      this.load.image('track1aL', 'assets/track1aL.png');
-      this.load.image('track1aR', 'assets/track1aR.png');
-      this.load.image('track1bL', 'assets/track1bL.png');
-      this.load.image('track1bR', 'assets/track1bR.png');
-      this.load.image('track1c', 'assets/track1c.png');
+      this.load.image('track1', 'assets/track1.png');
 
-      this.load.physics('physicsData', 'assets/tracks.json');
+      this.load.physics('physicsData', 'assets/physicsData.json');
     },
 
     create: function () {
