@@ -204,10 +204,10 @@ io.on('connection', function(socket) {
                 // remove client id from game room record
                 if( typeof gameRooms[sessionId] != "undefined" ) {
                     gameRooms[sessionId]['players'][playerId] = null;
-                }
 
-                // update viewer
-                io.to(gameRooms[sessionId]['viewerId']).emit('roomUpdate', playerid_room(sessionId));
+                    // update viewer
+                    io.to(gameRooms[sessionId]['viewerId']).emit('roomUpdate', playerid_room(sessionId));
+                }
             }
         }
     });
