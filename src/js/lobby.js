@@ -88,7 +88,19 @@
 
     onDown: function () {
       this.game.session = this.sessionToString();
-      this.game.state.start('control');
+      var that = this;
+      var x = this.game.width / 2
+        , y = this.game.height / 2;
+
+      remote.registerRoom(this.game.session, function(playerId) {
+        if( parseInt(playerId) > 0 ) {
+          that.game.playerid = playerId;
+          that.game.state.start('control');
+        } else {
+          that.titleTxt.setText(playerId);
+          that.titleTxt.tint = 0xFF00000;
+        }
+      });
     },
 
     sessionToString: function () {

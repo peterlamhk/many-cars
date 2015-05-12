@@ -155,10 +155,7 @@ io.on('connection', function(socket) {
         if( sessionId == null ||
             playerId == null ||
             playerId == 0 ) {
-            return callback({
-                success: false,
-                reason: 'Invalid client'
-            });
+            return;
         }
 
         if( Date.now() - lastMove < throttle ) {
@@ -172,6 +169,20 @@ io.on('connection', function(socket) {
         });
     });
 
+    // handle update players' location
+    socket.on('mobileDisplay', function(data) {
+        if( sessionId == null ||
+            playerId == null ||
+            playerId != 0 ) {
+            return callback({
+                success: false,
+                reason: 'Invalid client'
+            });
+        }
+
+        socket.in(sessionId).emit('updateCars', data);
+    });
+
     // handle client disconnection
     socket.on('disconnect', function() {
         socket.leave(sessionId);
@@ -179,9 +190,9 @@ io.on('connection', function(socket) {
         if( sessionId != null ) {
             if( playerId == 0 ) {
                 // delete room if viewer disconnected
-                io.sockets.clients(sessionId).forEach(function(s){
-                    s.leave(sessionId);
-                });
+                //io.sockets.clients(sessionId).forEach(function(s){
+                //    s.leave(sessionId);
+                //});
 
                 var roomIndex = rooms.indexOf(sessionId);
                 rooms.splice(roomIndex, 1);
