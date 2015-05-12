@@ -198,6 +198,7 @@
     this.numOfPlayer = 4;
     this.gameStarted = false;
     this.checkpoints = [];
+    this.cp = [{x: 274, y: 490, r: 2}, {x: 878, y: 439, r: 2}, {x: 510, y: 54, r: 2}];
   }
 
   Game.prototype = {
@@ -313,10 +314,8 @@
         this.cars[i].car.body.collides([carCollisionGroup, trackCollisionGroup, checkpointCollisionGroup]);
       }
 
-      this.checkpoints.push(new CheckPoint(0, this.game, checkpointMaterial, 274, 490, 2));
-      this.checkpoints.push(new CheckPoint(0, this.game, checkpointMaterial, 878, 439, 2));
-      this.checkpoints.push(new CheckPoint(0, this.game, checkpointMaterial, 510, 54, 2));
       for (var i = 0; i < 3; i++) {
+        this.checkpoints.push(new CheckPoint(0, this.game, checkpointMaterial, this.cp[i].x, this.cp[i].y, this.cp[i].r));
         this.checkpoints[i].body.setCollisionGroup(checkpointCollisionGroup);
         this.checkpoints[i].body.collides(carCollisionGroup);
         this.checkpoints[i].body.onBeginContact.add(function() {
