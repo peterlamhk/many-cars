@@ -188,12 +188,14 @@
     var circleShape = new p2.Circle(r);
     circleShape.sensor = true;
 
-    this.name = index;
-    this.body = game.physics.p2.createBody(x, y, 0, true);
-    this.body.debug = true;
-    this.body.clearShapes();
-    this.body.addShape(circleShape);
-    this.body.setMaterial(material);
+    this.checkpoint = game.add.sprite(x, y, 'zero');
+    this.checkpoint.name = index;
+    game.physics.p2.enable(this.checkpoint, true);
+
+    this.checkpoint.body.static = true;
+    this.checkpoint.body.clearShapes();
+    this.checkpoint.body.addShape(circleShape);
+    this.checkpoint.body.setMaterial(material);
   }
 
   CheckPoint.prototype ={
@@ -204,7 +206,8 @@
     this.cars = {};
     this.gameStarted = false;
     this.checkpoints = [];
-    this.cp = [{x: 274, y: 490, r: 2}, {x: 878, y: 439, r: 2}, {x: 510, y: 54, r: 2}];
+    this.cp = [{x: 290, y: 490, r: 2}, {x: 878, y: 439, r: 2}, {x: 510, y: 54, r: 2}];
+    this.cpArray = [];
   }
 
   Game.prototype = {
@@ -313,23 +316,32 @@
       this.track1.track.body.setCollisionGroup(trackCollisionGroup);
       this.track1.track.body.collides(carCollisionGroup, this.hitTrack, this);
 
+
+      for (var i = 0; i < 3; i++) {
+        this.checkpoints.push(new CheckPoint(i, this.game, checkpointMaterial, this.cp[i].x, this.cp[i].y, this.cp[i].r));
+        this.checkpoints[i].checkpoint.body.setCollisionGroup(checkpointCollisionGroup);
+        this.checkpoints[i].checkpoint.body.collides(carCollisionGroup);
+      }
+
       for( var i = 1; i <= 4; i++ ) {
         if( viewer.latestPlayerList.indexOf(i) != -1 ) {
           this.cars[i] = new Car(i, this.game, carMaterial);
 
           this.cars[i].car.body.setCollisionGroup(carCollisionGroup);
           this.cars[i].car.body.collides([carCollisionGroup, trackCollisionGroup, checkpointCollisionGroup]);
+
+          this.cars[i].car.body.onBeginContact.add(function(body, shapeA, shapeB, equation) {
+            if (body.sprite.name != this.track1.name) {
+              var cpLength = this.cpArray.length;
+              this.cpArray.push(body.sprite.name);
+              if (cpLength == this.cpArray[cpLength]) {
+                console.log(body.sprite.name);
+              } else {
+                this.cpArray.pop();
+              }
+            }
+          }, this);
         }
-      }
-
-      for (var i = 0; i < 3; i++) {
-        this.checkpoints.push(new CheckPoint(0, this.game, checkpointMaterial, this.cp[i].x, this.cp[i].y, this.cp[i].r));
-        this.checkpoints[i].body.setCollisionGroup(checkpointCollisionGroup);
-        this.checkpoints[i].body.collides(carCollisionGroup);
-        this.checkpoints[i].body.onBeginContact.add(function() {
-          console.log('onBeginContact');
-        }, this);
-
       }
 
       // this.cursors = this.game.input.keyboard.createCursorKeys();
