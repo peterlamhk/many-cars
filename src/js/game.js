@@ -182,9 +182,28 @@
 
   }
 
+  function CheckPoint(index, game, material, x, y, r) {
+    this.game = game;
+
+    var circleShape = new p2.Circle(r);
+    circleShape.sensor = true;
+
+    this.name = index;
+    this.body = game.physics.p2.createBody(x, y, 0, true);
+    this.body.debug = true;
+    this.body.clearShapes();
+    this.body.addShape(circleShape);
+    this.body.setMaterial(material);
+  }
+
+  CheckPoint.prototype ={
+
+  }
+
   function Game() {
     this.cars = {};
     this.gameStarted = false;
+    this.checkpoints = [];
   }
 
   Game.prototype = {
@@ -271,11 +290,13 @@
 
       var carCollisionGroup = this.game.physics.p2.createCollisionGroup();
       var trackCollisionGroup = this.game.physics.p2.createCollisionGroup();
+      var checkpointCollisionGroup = this.game.physics.p2.createCollisionGroup();
       this.game.physics.p2.updateBoundsCollisionGroup();
 
 
       var carMaterial = this.game.physics.p2.createMaterial('carMaterial');
       var trackMaterial = this.game.physics.p2.createMaterial('trackMaterial');
+      var checkpointMaterial = this.game.physics.p2.createMaterial('checkpointMaterial');
 
 
       var contactMaterial = this.game.physics.p2.createContactMaterial(carMaterial, trackMaterial);
@@ -296,8 +317,20 @@
           this.cars[i] = new Car(i, this.game, carMaterial);
 
           this.cars[i].car.body.setCollisionGroup(carCollisionGroup);
-          this.cars[i].car.body.collides([carCollisionGroup, trackCollisionGroup]);
+          this.cars[i].car.body.collides([carCollisionGroup, trackCollisionGroup, checkpointCollisionGroup]);
         }
+      }
+
+      this.checkpoints.push(new CheckPoint(0, this.game, checkpointMaterial, 274, 490, 2));
+      this.checkpoints.push(new CheckPoint(0, this.game, checkpointMaterial, 878, 439, 2));
+      this.checkpoints.push(new CheckPoint(0, this.game, checkpointMaterial, 510, 54, 2));
+      for (var i = 0; i < 3; i++) {
+        this.checkpoints[i].body.setCollisionGroup(checkpointCollisionGroup);
+        this.checkpoints[i].body.collides(carCollisionGroup);
+        this.checkpoints[i].body.onBeginContact.add(function() {
+          console.log('onBeginContact');
+        }, this);
+
       }
 
       // this.cursors = this.game.input.keyboard.createCursorKeys();
