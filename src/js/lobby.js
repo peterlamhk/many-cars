@@ -15,6 +15,8 @@
 
     this.inputValue = [];
     this.count = 0;
+
+    this.numberTxt = [];
   }
 
   Lobby.prototype = {
@@ -26,7 +28,7 @@
 
     create: function () {
       var x = this.game.width / 2
-        , y = this.game.height / 2;
+        , y = this.game.height / 2, i = 0;
 
       var graphics = this.game.add.graphics(0, 0);
       graphics.beginFill(0xFFFFFF, 1);
@@ -40,7 +42,7 @@
       this.startTxt = this.add.bitmapText(x, y, 'minecraftia', 'Next' );
       this.startTxt.align = 'center';
       this.startTxt.x = x - this.startTxt.textWidth / 2;
-      this.startTxt.y = y + this.rectHeight + this.padding;
+      this.startTxt.y = y + this.rectHeight + this.startTxt.height + this.padding;
 
       this.sessionTxt = this.add.bitmapText(x, y, 'minecraftia', '0000' );
       this.sessionTxt.align = 'center';
@@ -54,6 +56,37 @@
       // Initiate Event Listener
       this.startTxt.inputEnabled = true;
       this.startTxt.events.onInputDown.add(this.onDown, this);
+
+      for (i = 0; i < 10;i++){
+        this.numberTxt.push(this.add.bitmapText(x, y, 'minecraftia', ''+i ));
+        this.numberTxt[i].align = 'center';
+        this.numberTxt[i].x = x - this.numberTxt[i].textWidth /2 - (i-5) *this.numberTxt[i].width*2 - this.numberTxt[i].width;
+        this.numberTxt[i].y = y + this.rectHeight/1.5;
+        this.numberTxt[i].inputEnabled = true;
+        var that = this;
+        this.numberTxt[i].events.onInputDown.add(function(){
+          var copy = i;
+          return function() {
+            that.numberDown(copy);
+          }
+          }(), this);
+      }
+    },
+
+    numberDown: function(num){
+      // console.log('1');
+      // this.game.session = this.sessionToString();
+      // this.game.state.start('control');
+      var char = ''+num;
+      var pattern = /[0-9]/;
+      if (char.search(pattern) >= 0){
+        this.inputValue[this.count % this.max] = char;
+        this.count ++;
+      } else {
+        console.log(char);
+      }
+      this.sessionTxt.setText(this.sessionToString());
+      
     },
 
     update: function () {
