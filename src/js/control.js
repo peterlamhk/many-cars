@@ -26,6 +26,8 @@
     this.rectHeight = 50;
 
     this.playerColor = null;
+
+    this.debugText = null;
   }
 
   Control.prototype = {
@@ -113,7 +115,21 @@
         // button.onInputOver.add(over, this);
         // button.onInputOut.add(out, this);
         // button.onInputUp.add(up, this);
+
+        this.debugText = this.add.bitmapText(width/2, 20, 'minecraftia', '0, 0, 0' );
+        this.debugText.anchor.set(0.5);
+        this.debugText.align = 'center';
+
+        window.ondevicemotion = function(event) {  
+            var accelerationX = event.accelerationIncludingGravity.x;  
+            var accelerationY = event.accelerationIncludingGravity.y;  
+            var accelerationZ = event.accelerationIncludingGravity.z; 
+
+            this.debugText.setText('x: '+ accelerationX +', y: '+accelerationY +', z: '+accelerationZ);
+        }  
     },
+
+
 
     update: function () {
 
