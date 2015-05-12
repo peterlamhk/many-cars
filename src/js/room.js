@@ -39,25 +39,30 @@
       this.startTxt.inputEnabled = true;
       this.startTxt.events.onInputDown.add(this.onStartButtonDown, this);
 
-
       size = this.playerTitle.textHeight;
       for (i = 0; i < this.maxPlayer; i++){
-        this.playerTxt.push(this.add.bitmapText(0, 0, 'minecraftia', 'Player '+i ));
+        this.playerTxt.push(this.add.bitmapText(0, 0, 'minecraftia', 'Player '+ i-(-1) ));
         this.titleTxt.align = 'left';
         this.playerTxt[i].tint=this.color[i];
         this.playerTxt[i].x = this.titleTxt.textWidth / 2;
         this.playerTxt[i].y = this.playerTitle.y + 5 + this.playerTitle.textHeight * (i+1);
       }
-      this.updatePlayers();
+
+      // set listener to update player changes
+      var that = this;
+      viewer.initRmChangeListener(function(list) {
+        that.playerList = list;
+        that.updatePlayers();
+      })
     },
 
     updatePlayers: function(){
-      var i=0;
-      for (i=0; i<this.playerList.length;i++){
-        this.playerTxt[i].setText('Player '+i);
-      }
-      for (i=i;i<this.maxPlayer;i++){
-        this.playerTxt[i].setText(' ');
+      for(var i = 1; i <= this.maxPlayer; i++){
+        if( this.playerList.indexOf(i) == -1 ) {
+          this.playerTxt[i-1].setText(' ');
+        } else {
+          this.playerTxt[i-1].setText('Player '+i);
+        }
       }
     },
 
