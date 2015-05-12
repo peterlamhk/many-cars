@@ -10,24 +10,6 @@
         window.addEventListener('beforeunload', function() {
             socket.close();
         });
-
-        // bind keyboard arrows
-        var map = {
-            37: 'left',
-            39: 'right',
-            38: 'up',
-            40: 'down'
-        };
-
-        $(document).on('keydown', function(ev){
-            if (null == remote.sessionId || null == remote.playerId ) return;
-            var code = ev.keyCode;
-            if ($('body').hasClass('input_focus')) return;
-            if (map[code]) {
-                ev.preventDefault();
-                remote.emitMove(map[code]);
-            }
-        });
     }
 
     var initSocketIO = function() {
@@ -60,7 +42,12 @@
         });
     }
 
-    remote.emitMove = function(action) {
-        socket.emit('move', action);
+    remote.emitMove = function(up, down, left, right) {
+        socket.emit('move', {
+            up: up,
+            down: down,
+            left: left,
+            right: right
+        });
     }
 })();

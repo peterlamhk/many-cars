@@ -84,19 +84,19 @@
     },
 
     buttonUpOnClick: function(){
-
+        remote.emitMove(true, false, false, false);
     },
     
     buttonDownOnClick: function(){
-
+        remote.emitMove(false, true, false, false);
     },
     
     buttonLeftOnClick: function(){
-
+        remote.emitMove(false, false, true, false);
     },
     
     buttonRightOnClick: function(){
-
+        remote.emitMove(false, false, false, true);
     }
   };
 

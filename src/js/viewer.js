@@ -2,6 +2,7 @@
     var viewer = window.viewer = {};
 
     viewer.sessionId = null;
+    viewer.latestPlayerList = [];
     var socket = null;
     viewer.init = function() {
         // initialize socket.io and events
@@ -29,6 +30,7 @@
     viewer.initRmChangeListener = function(callbackRmChange) {
         // listen to room player change
         socket.on('roomUpdate', function(data) {
+            viewer.latestPlayerList = data;
             callbackRmChange(data);
         });
     }

@@ -29,6 +29,13 @@
     this.car.body.setMaterial(material);
 
     this.cursors = game.input.keyboard.createCursorKeys();
+
+    // remote control touch status
+    this.control = {};
+    this.control.up = false;
+    this.control.down = false;
+    this.control.left = false;
+    this.control.right = false;
   }
 
   Car.prototype = {
@@ -44,25 +51,25 @@
     update: function() {
       if (this.currentSpeed > 250) {
         this.baseSpeed = 0.25;
-        this.steeringMultiplier = this.cursors.up.isDown ? 1 : 2;
+        this.steeringMultiplier = this.control.up ? 1 : 2;
       } else if (this.currentSpeed > 200) {
         this.baseSpeed = 0.5;
-        this.steeringMultiplier = this.cursors.up.isDown ? 1.5 : 2;
+        this.steeringMultiplier = this.control.up ? 1.5 : 2;
       } else if (this.currentSpeed > 150) {
         this.baseSpeed = 0.75;
-        this.steeringMultiplier = this.cursors.up.isDown ? 1.5 : 2;
+        this.steeringMultiplier = this.control.up ? 1.5 : 2;
       } else {
         this.baseSpeed = 1;
         this.steeringMultiplier = 2;
       }
 
-      if (this.cursors.left.isDown) {
+      if (this.control.left) {
         if (this.currentSpeed > 0) {
           this.steeringAngle = this.steeringAngle > 0 ? this.steeringAngle - this.steeringMultiplier : 359;
         } else if (this.currentSpeed < 0) {
           this.steeringAngle = this.steeringAngle < 359 ? this.steeringAngle + this.steeringMultiplier : 0;
         }
-      } else if (this.cursors.right.isDown) {
+      } else if (this.control.right) {
         if (this.currentSpeed > 0) {
           this.steeringAngle = this.steeringAngle < 359 ? this.steeringAngle + this.steeringMultiplier : 0;
         } else if (this.currentSpeed < 0) {
@@ -70,7 +77,7 @@
         }
       }
 
-      if (this.cursors.left.isDown || this.cursors.right.isDown) {
+      if (this.control.left || this.control.right) {
         var angle = this.steeringAngle-270;
         if (angle < 0){
           angle += 360;
@@ -89,7 +96,7 @@
         this.car.frame = frame;
       }
 
-      if (this.cursors.up.isDown) {
+      if (this.control.up) {
         if (this.currentSpeed < 300) {
           this.currentSpeed += this.baseSpeed;
         }
@@ -113,7 +120,7 @@
             this.velocityFromAngle(this.steeringAngle, this.backwardSpeed, this.car.body.velocity);
           }
         }
-      } else if (this.cursors.down.isDown) {
+      } else if (this.control.down) {
         if (this.currentSpeed > -100) {
           this.currentSpeed -= 4;
         } else if (this.backwardSpeed > -100) {
@@ -132,7 +139,7 @@
         }
       }
 
-      if (!this.cursors.up.isDown) {
+      if (!this.control.up) {
         if (this.skiddingSpeed > 0) {
           this.skiddingSpeed -= 1;
         }
@@ -176,8 +183,7 @@
   }
 
   function Game() {
-    this.cars = [];
-    this.numOfPlayer = 4;
+    this.cars = {};
   }
 
   Game.prototype = {
@@ -235,21 +241,30 @@
       this.track1.track.body.setCollisionGroup(trackCollisionGroup);
       this.track1.track.body.collides(carCollisionGroup, this.hitTrack, this);
 
-      for (var i = 0; i < this.numOfPlayer; i++) {
-        this.cars.push(new Car(i, this.game, carMaterial));
+      for( var i = 1; i <= 4; i++ ) {
+        if( viewer.latestPlayerList.indexOf(i) != -1 ) {
+          this.cars[i] = new Car(i, this.game, carMaterial);
 
-        this.cars[i].car.body.setCollisionGroup(carCollisionGroup);
-        this.cars[i].car.body.collides([carCollisionGroup, trackCollisionGroup]);
+          this.cars[i].car.body.setCollisionGroup(carCollisionGroup);
+          this.cars[i].car.body.collides([carCollisionGroup, trackCollisionGroup]);
+        }
       }
 
       // this.cursors = this.game.input.keyboard.createCursorKeys();
       this.game.input.onDown.add(this.click, this);
+
+      // set listener to update remote control
+      var that = this;
+      viewer.initPlayerMoveListener(function(playerId, moves) {
+        that.cars[playerId].control = moves;
+      });
     },
 
     update: function() {
-      for (var i = 0; i < this.numOfPlayer; i++) {
-        this.cars[i].update();
-      }
+      var that = this;
+      Object.keys(this.cars).forEach(function(key) {
+        that.cars[key].update();
+      });
     },
 
     onInputDown: function() {
