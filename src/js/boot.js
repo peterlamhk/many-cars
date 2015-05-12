@@ -10,7 +10,7 @@
     },
 
     create: function () {
-      this.game.input.maxPointers = 1;
+      this.game.input.maxPointers = 2;
 
       this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
       this.game.scale.maxWidth = 1280;
