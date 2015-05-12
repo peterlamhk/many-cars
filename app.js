@@ -155,10 +155,7 @@ io.on('connection', function(socket) {
         if( sessionId == null ||
             playerId == null ||
             playerId == 0 ) {
-            return callback({
-                success: false,
-                reason: 'Invalid client'
-            });
+            return;
         }
 
         if( Date.now() - lastMove < throttle ) {
