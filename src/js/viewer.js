@@ -6,7 +6,6 @@
     viewer.init = function() {
         // initialize socket.io and events
         initSocketIO();
-        initSocketListener();
         window.addEventListener('beforeunload', function() {
             socket.close();
         });
@@ -27,15 +26,17 @@
         socket.on('reconnect_failed', connectionFailed);
     }
 
-    var initSocketListener = function(callbackRmChange, callbackPlayerChange) {
+    viewer.initRmChangeListener = function(callbackRmChange) {
         // listen to room player change
         socket.on('roomUpdate', function(data) {
-            console.log("room update " + JSON.stringify(data));
+            callbackRmChange(data);
         });
+    }
 
+    viewer.initPlayerMoveListener = function(callbackPlayerChange) {
         // listen to players' actions
         socket.on('playerMove', function(data) {
-            console.log("player " + data.player + " update " + data.move);
+            callbackPlayerChange(data.player, data.move);
         });
     }
 

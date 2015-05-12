@@ -7,7 +7,6 @@
     remote.init = function() {
         // initialize socket.io and events
         initSocketIO();
-        initSocketListener();
         window.addEventListener('beforeunload', function() {
             socket.close();
         });
@@ -21,7 +20,7 @@
         };
 
         $(document).on('keydown', function(ev){
-            if (null == sessionId || null == playerId ) return;
+            if (null == remote.sessionId || null == remote.playerId ) return;
             var code = ev.keyCode;
             if ($('body').hasClass('input_focus')) return;
             if (map[code]) {
@@ -46,10 +45,6 @@
         socket.on('reconnect_failed', connectionFailed);
     }
 
-    var initSocketListener = function() {
-
-    }
-
     remote.registerRoom = function(roomId, callback) {
         socket.emit('register', roomId, function(data) {
             if( data.success ) {
@@ -60,7 +55,7 @@
 
                 callback(playerId);
             } else {
-                console.log(data.reason);
+                callback(data.reason);
             }
         });
     }
