@@ -201,7 +201,9 @@ io.on('connection', function(socket) {
 
             } else {
                 // remove client id from game room record
-                gameRooms[sessionId]['players'][playerId] = null;
+                if( typeof gameRooms[sessionId] != "undefined" ) {
+                    gameRooms[sessionId]['players'][playerId] = null;
+                }
 
                 // update viewer
                 io.to(gameRooms[sessionId]['viewerId']).emit('roomUpdate', playerid_room(sessionId));
