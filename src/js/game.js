@@ -1,8 +1,11 @@
 (function() {
   'use strict';
 
-  function Game() {
-    this.player = null;
+  function Car(index, game, material) {
+    var x = game.width / 2,
+        y = game.height / 2;
+
+    this.game = game;
     this.steeringAngle = 270;
     this.steeringMultiplier = 2;
     this.currentSpeed = 0;
@@ -11,12 +14,24 @@
     this.skiddingSpeed = 0;
     this.drifting = false;
     this.reduceSpeed = false;
+
+    this.car = game.add.sprite(x, y, 'cars');
+    this.car.anchor.set(0.5);
+    this.car.name = index;
+
+    this.car.frame = 0;
+
+    game.physics.p2.enable(this.car);
+    this.car.body.setCircle(10);
+    this.car.body.data.gravityScale = 0;
+    this.car.body.damping = 0.01;
+    this.car.body.fixedRotation = true;
+    this.car.body.setMaterial(material);
+
+    this.cursors = game.input.keyboard.createCursorKeys();
   }
 
-  Game.prototype = {
-    hitTrack: function(body1, body2) {
-      this.currentSpeed -= 50;
-    },
+  Car.prototype = {
     velocityFromAngle: function (angle, speed, point) {
 
       point = point || new Phaser.Point();
@@ -26,86 +41,7 @@
 
       return point;
     },
-
-    click: function(pointer) {
-      var result;
-      var bodies = this.game.physics.p2.hitTest(pointer.position, [ this.track1aL, this.track1aR, this.track1bL, this.track1bR ]);
-
-      if (bodies.length === 0) {
-        result = "You didn't click a Body";
-      } else {
-        result = "You clicked: ";
-        for (var i = 0; i < bodies.length; i++) {
-          result = result + bodies[i].parent.sprite.key;
-
-          if (i < bodies.length - 1) {
-              result = result + ', ';
-            }
-        }
-      }
-      console.log(result);
-    },
-
-    create: function() {
-      var x = this.game.width / 2,
-          y = this.game.height / 2;
-
-      this.game.physics.startSystem(Phaser.Physics.P2JS);
-      this.game.physics.p2.setImpactEvents(true);
-      this.game.physics.p2.gravity.y = 0;
-      this.game.physics.p2.gravity.x = 0;
-
-      var carCollisionGroup = this.game.physics.p2.createCollisionGroup();
-      var trackCollisionGroup = this.game.physics.p2.createCollisionGroup();
-      this.game.physics.p2.updateBoundsCollisionGroup();
-
-      this.track1 = this.add.sprite(480, 270, 'track1');
-      this.game.physics.p2.enable([ this.track1 ]);
-
-      this.track1.body.static = true;
-
-      this.track1.body.clearShapes();
-      this.track1.body.loadPolygon('physicsData', 'track1');
-
-      this.car = this.add.sprite(x, y, 'cars');
-      this.car.anchor.set(0.5);
-
-      this.car.frame = 0;
-
-      this.game.physics.p2.enable(this.car);
-      this.car.body.setCircle(10);
-      this.car.body.data.gravityScale = 0;
-      this.car.body.damping = 0.01;
-
-      var carMaterial = this.game.physics.p2.createMaterial('carMaterial');
-      var trackMaterial = this.game.physics.p2.createMaterial('trackMaterial');
-
-      this.car.body.setMaterial(carMaterial);
-      this.car.body.fixedRotation = true;
-
-      this.track1.body.setMaterial(trackMaterial);
-
-      var contactMaterial = this.game.physics.p2.createContactMaterial(carMaterial, trackMaterial);
-      contactMaterial.friction = 0.3;
-      contactMaterial.restitution = 0.0;
-      contactMaterial.stiffness = 1e7;
-      contactMaterial.relaxation = 3;
-      contactMaterial.frictionStiffness = 1e7;
-      contactMaterial.frictionRelaxation = 3;
-      contactMaterial.surfaceVelocity = 0;
-
-      this.car.body.setCollisionGroup(carCollisionGroup);
-      this.car.body.collides([carCollisionGroup, trackCollisionGroup]);
-      this.track1.body.setCollisionGroup(trackCollisionGroup);
-      this.track1.body.collides(carCollisionGroup, this.hitTrack, this);
-
-
-      this.cursors = this.game.input.keyboard.createCursorKeys();
-      this.game.input.onDown.add(this.click, this);
-    },
-
     update: function() {
-
       if (this.currentSpeed > 250) {
         this.baseSpeed = 0.25;
         this.steeringMultiplier = this.cursors.up.isDown ? 1 : 2;
@@ -215,6 +151,104 @@
         this.drifting = false;
       } else if (!this.drifting) {
         this.drifting = true;
+      }
+    }
+  }
+
+  function Track(index, game, material) {
+    var x = game.width / 2,
+        y = game.height / 2;
+
+    this.game = game;
+
+    this.track = game.add.sprite(480, 270, index);
+    this.track.name = index;
+    this.game.physics.p2.enable(this.track);
+
+    this.track.body.static = true;
+
+    this.track.body.clearShapes();
+    this.track.body.loadPolygon('physicsData', index);
+  }
+
+  Track.prototype = {
+
+  }
+
+  function Game() {
+    this.cars = [];
+    this.numOfPlayer = 4;
+  }
+
+  Game.prototype = {
+    hitTrack: function(body1, body2) {
+      // this.currentSpeed -= 50;
+    },
+
+    click: function(pointer) {
+      var result;
+      var bodies = this.game.physics.p2.hitTest(pointer.position, [ this.track1aL, this.track1aR, this.track1bL, this.track1bR ]);
+
+      if (bodies.length === 0) {
+        result = "You didn't click a Body";
+      } else {
+        result = "You clicked: ";
+        for (var i = 0; i < bodies.length; i++) {
+          result = result + bodies[i].parent.sprite.key;
+
+          if (i < bodies.length - 1) {
+              result = result + ', ';
+            }
+        }
+      }
+      console.log(result);
+    },
+
+    create: function() {
+      var x = this.game.width / 2,
+          y = this.game.height / 2;
+
+      this.game.physics.startSystem(Phaser.Physics.P2JS);
+      this.game.physics.p2.setImpactEvents(true);
+      this.game.physics.p2.gravity.y = 0;
+      this.game.physics.p2.gravity.x = 0;
+
+      var carCollisionGroup = this.game.physics.p2.createCollisionGroup();
+      var trackCollisionGroup = this.game.physics.p2.createCollisionGroup();
+      this.game.physics.p2.updateBoundsCollisionGroup();
+
+
+      var carMaterial = this.game.physics.p2.createMaterial('carMaterial');
+      var trackMaterial = this.game.physics.p2.createMaterial('trackMaterial');
+
+
+      var contactMaterial = this.game.physics.p2.createContactMaterial(carMaterial, trackMaterial);
+      contactMaterial.friction = 0.3;
+      contactMaterial.restitution = 0.0;
+      contactMaterial.stiffness = 1e7;
+      contactMaterial.relaxation = 3;
+      contactMaterial.frictionStiffness = 1e7;
+      contactMaterial.frictionRelaxation = 3;
+      contactMaterial.surfaceVelocity = 0;
+
+      this.track1 = new Track('track1', this.game, trackMaterial);
+      this.track1.track.body.setCollisionGroup(trackCollisionGroup);
+      this.track1.track.body.collides(carCollisionGroup, this.hitTrack, this);
+
+      for (var i = 0; i < this.numOfPlayer; i++) {
+        this.cars.push(new Car(i, this.game, carMaterial));
+
+        this.cars[i].car.body.setCollisionGroup(carCollisionGroup);
+        this.cars[i].car.body.collides([carCollisionGroup, trackCollisionGroup]);
+      }
+
+      // this.cursors = this.game.input.keyboard.createCursorKeys();
+      this.game.input.onDown.add(this.click, this);
+    },
+
+    update: function() {
+      for (var i = 0; i < this.numOfPlayer; i++) {
+        this.cars[i].update();
       }
     },
 
