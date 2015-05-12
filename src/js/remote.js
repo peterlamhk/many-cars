@@ -27,6 +27,12 @@
         socket.on('reconnect_failed', connectionFailed);
     }
 
+    remote.initMobileDisplayChange = function(callbackDisplayChange) {
+        socket.on('updateCars', function(data) {
+            callbackDisplayChange(data);
+        });
+    }
+
     remote.registerRoom = function(roomId, callback) {
         socket.emit('register', roomId, function(data) {
             if( data.success ) {

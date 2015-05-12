@@ -180,16 +180,7 @@ io.on('connection', function(socket) {
             });
         }
 
-        for( var i = 1; i <= 4; i++ ) {
-            if( gameRooms[sessionId]['players'][i] != null ) {
-
-                // update remote client
-                io.to(gameRooms[sessionId]['players'][i]).emit('location', {
-
-                });
-
-            }
-        }
+        socket.in(sessionId).emit('updateCars', data);
     });
 
     // handle client disconnection
@@ -199,9 +190,9 @@ io.on('connection', function(socket) {
         if( sessionId != null ) {
             if( playerId == 0 ) {
                 // delete room if viewer disconnected
-                io.sockets.clients(sessionId).forEach(function(s){
-                    s.leave(sessionId);
-                });
+                //io.sockets.clients(sessionId).forEach(function(s){
+                //    s.leave(sessionId);
+                //});
 
                 var roomIndex = rooms.indexOf(sessionId);
                 rooms.splice(roomIndex, 1);

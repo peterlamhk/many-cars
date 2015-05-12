@@ -317,7 +317,21 @@
       Object.keys(this.cars).forEach(function(key) {
         that.cars[key].update();
       });
+      this.updateCarLocations();
       this.updateTimer();
+    },
+
+    updateCarLocations: function() {
+      var data = {}, that = this;
+
+      Object.keys(this.cars).forEach(function(key) {
+        data[key] = {
+          x: that.cars[key].car.x,
+          y: that.cars[key].car.y
+        };
+      });
+
+      viewer.updateMobileDisplay(data);
     },
 
     onInputDown: function() {

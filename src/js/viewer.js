@@ -54,4 +54,8 @@
             }
         });
     }
+
+    viewer.updateMobileDisplay = function(data) {
+        socket.emit('mobileDisplay', data);
+    }
 })();
