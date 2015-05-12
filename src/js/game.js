@@ -51,25 +51,25 @@
     update: function() {
       if (this.currentSpeed > 250) {
         this.baseSpeed = 0.25;
-        this.steeringMultiplier = this.control.up ? 1 : 2;
+        this.steeringMultiplier = this.cursors.up.isDown ? 1 : 2;
       } else if (this.currentSpeed > 200) {
         this.baseSpeed = 0.5;
-        this.steeringMultiplier = this.control.up ? 1.5 : 2;
+        this.steeringMultiplier = this.cursors.up.isDown ? 1.5 : 2;
       } else if (this.currentSpeed > 150) {
         this.baseSpeed = 0.75;
-        this.steeringMultiplier = this.control.up ? 1.5 : 2;
+        this.steeringMultiplier = this.cursors.up.isDown ? 1.5 : 2;
       } else {
         this.baseSpeed = 1;
         this.steeringMultiplier = 2;
       }
 
-      if (this.control.left) {
+      if (this.cursors.left.isDown) {
         if (this.currentSpeed > 0) {
           this.steeringAngle = this.steeringAngle > 0 ? this.steeringAngle - this.steeringMultiplier : 359;
         } else if (this.currentSpeed < 0) {
           this.steeringAngle = this.steeringAngle < 359 ? this.steeringAngle + this.steeringMultiplier : 0;
         }
-      } else if (this.control.right) {
+      } else if (this.cursors.right.isDown) {
         if (this.currentSpeed > 0) {
           this.steeringAngle = this.steeringAngle < 359 ? this.steeringAngle + this.steeringMultiplier : 0;
         } else if (this.currentSpeed < 0) {
@@ -77,7 +77,7 @@
         }
       }
 
-      if (this.control.left || this.control.right) {
+      if (this.cursors.left.isDown || this.cursors.right.isDown) {
         var angle = this.steeringAngle-270;
         if (angle < 0){
           angle += 360;
@@ -96,7 +96,7 @@
         this.car.frame = frame;
       }
 
-      if (this.control.up) {
+      if (this.cursors.up.isDown) {
         if (this.currentSpeed < 300) {
           this.currentSpeed += this.baseSpeed;
         }
@@ -120,7 +120,7 @@
             this.velocityFromAngle(this.steeringAngle, this.backwardSpeed, this.car.body.velocity);
           }
         }
-      } else if (this.control.down) {
+      } else if (this.cursors.down.isDown) {
         if (this.currentSpeed > -100) {
           this.currentSpeed -= 4;
         } else if (this.backwardSpeed > -100) {
@@ -139,7 +139,7 @@
         }
       }
 
-      if (!this.control.up) {
+      if (!this.cursors.up.isDown) {
         if (this.skiddingSpeed > 0) {
           this.skiddingSpeed -= 1;
         }
