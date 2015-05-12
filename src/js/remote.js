@@ -42,12 +42,7 @@
         });
     }
 
-    remote.emitMove = function(up, down, left, right) {
-        socket.emit('move', {
-            up: up,
-            down: down,
-            left: left,
-            right: right
-        });
+    remote.emitMove = function(controls) {
+        socket.emit('move', controls);
     }
 })();

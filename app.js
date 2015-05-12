@@ -172,6 +172,29 @@ io.on('connection', function(socket) {
         });
     });
 
+    // handle update players' location
+    socket.on('mobileDisplay', function(data) {
+        if( sessionId == null ||
+            playerId == null ||
+            playerId != 0 ) {
+            return callback({
+                success: false,
+                reason: 'Invalid client'
+            });
+        }
+
+        for( var i = 1; i <= 4; i++ ) {
+            if( gameRooms[sessionId]['players'][i] != null ) {
+
+                // update remote client
+                io.to(gameRooms[sessionId]['players'][i]).emit('location', {
+
+                });
+
+            }
+        }
+    });
+
     // handle client disconnection
     socket.on('disconnect', function() {
         socket.leave(sessionId);

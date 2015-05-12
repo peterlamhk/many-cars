@@ -26,6 +26,12 @@
     this.rectHeight = 50;
 
     this.playerColor = null;
+
+    this.control = {};
+    this.control.up = false;
+    this.control.down = false;
+    this.control.left = false;
+    this.control.right = false;
   }
 
   Control.prototype = {
@@ -125,48 +131,44 @@
 
       // this.game.state.start('room');
       if (this.clickableAreaUp.contains(x, y)){
-        this.buttonUpOnClick();
+        this.control.up = true;
+        this.buttonUp.frame = 0;
       } else if (this.clickableAreaDown.contains(x, y)){
-        this.buttonDownOnClick();
+        this.control.down = true;
+        this.buttonDown.frame = 0;
       } else if (this.clickableAreaLeft.contains(x, y)){
-        this.buttonLeftOnClick();
+        this.control.left = true;
+        this.buttonLeft.frame = 0;
       } else if (this.clickableAreaRight.contains(x, y)){
-        this.buttonRightOnClick();
+        this.control.right = true;
+        this.buttonRight.frame = 0;
       }
+
+      this.updateControl();
     },
 
     onUp: function (pointer){
         var x = pointer.positionDown.x;
         var y = pointer.positionDown.y;
         if (this.clickableAreaUp.contains(x, y)){
-            this.buttonUp.frame =1;
+            this.control.up = false;
+            this.buttonUp.frame = 1;
         } else if (this.clickableAreaDown.contains(x, y)){
-            this.buttonDown.frame =1;
+            this.control.down = false;
+            this.buttonDown.frame = 1;
         } else if (this.clickableAreaLeft.contains(x, y)){
-            this.buttonLeft.frame =1;
+            this.control.left = false;
+            this.buttonLeft.frame = 1;
         } else if (this.clickableAreaRight.contains(x, y)){
-            this.buttonRight.frame =1;
+            this.control.right = false;
+            this.buttonRight.frame = 1;
         }
+
+      this.updateControl();
     },
 
-    buttonUpOnClick: function(){
-        console.log('up');
-        this.buttonUp.frame =0;
-    },
-
-    buttonDownOnClick: function(){
-        console.log('down');
-        this.buttonDown.frame =0;
-    },
-    
-    buttonLeftOnClick: function(){
-        console.log('left');
-        this.buttonLeft.frame =0;
-    },
-    
-    buttonRightOnClick: function(){
-        console.log('right');
-        this.buttonRight.frame =0;
+    updateControl: function() {
+        remote.emitMove(this.control);
     }
   };
 
