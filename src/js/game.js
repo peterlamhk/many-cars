@@ -184,9 +184,59 @@
 
   function Game() {
     this.cars = {};
+    this.gameStarted = false;
   }
 
   Game.prototype = {
+    startTimer: function() {
+      this.readyText = this.add.bitmapText(0, 0, 'minecraftia', 'Ready' );
+      this.readyText.align = 'center';
+      this.readyText.x = this.game.width / 2;
+      this.readyText.y = this.game.height / 2;
+      this.readyText.anchor.set(0.5);
+
+      var textArray = ['3', '2', '1', 'Go!', ''];
+      for (var i = 0; i < textArray.length; i++) {
+        this.game.time.events.add((i+1)*1000, function() {
+          var text = textArray[i];
+          return function() {
+            this.readyText.setText(text);
+          }
+        }(), this);
+      }
+
+      this.game.time.events.add(4000, function() {
+        this.timerText = this.add.bitmapText(0, 0, 'minecraftia', '00:00:00' );
+        this.timerText.align = 'center';
+        this.timerText.x = this.game.width - 100;
+        this.timerText.y = 30;
+        this.timerText.anchor.set(0.5);
+
+        this.startTime = this.game.time.time;
+        this.gameStarted = true;
+      }, this);
+    },
+    updateTimer: function() {
+      if (this.gameStarted) {
+        this.elapsedTime = this.game.time.elapsedSince(this.startTime);
+        this.minutes = Math.floor(this.elapsedTime / 60000) % 60;
+
+        this.seconds = Math.floor(this.elapsedTime / 1000) % 60;
+
+        this.milliseconds = Math.floor(this.elapsedTime) % 100;
+
+        if (this.milliseconds < 10)
+          this.milliseconds = '0' + this.milliseconds;
+
+        if (this.seconds < 10)
+          this.seconds = '0' + this.seconds;
+
+        if (this.minutes < 10)
+          this.minutes = '0' + this.minutes;
+
+        this.timerText.setText(this.minutes + ':'+ this.seconds + ':' + this.milliseconds);
+      }
+    },
     hitTrack: function(body1, body2) {
       // this.currentSpeed -= 50;
     },
@@ -258,6 +308,8 @@
       viewer.initPlayerMoveListener(function(playerId, moves) {
         that.cars[playerId].control = moves;
       });
+
+      this.startTimer();
     },
 
     update: function() {
@@ -265,6 +317,7 @@
       Object.keys(this.cars).forEach(function(key) {
         that.cars[key].update();
       });
+      this.updateTimer();
     },
 
     onInputDown: function() {
