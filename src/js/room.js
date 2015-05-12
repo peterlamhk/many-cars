@@ -7,6 +7,7 @@
     this.playerTitle = null;
     this.playerTxt = [];
     this.playerList = [];
+    this.selectedTrack = null;
 
     this.maxPlayer = 4;
     this.rectWidth = 50;
@@ -38,6 +39,47 @@
 
       this.startTxt.inputEnabled = true;
       this.startTxt.events.onInputDown.add(this.onStartButtonDown, this);
+
+      var tracksList = {
+        track1: 'Track#1',
+        track2: 'Track#2',
+        track3: 'Track#3',
+      };
+      var tracksKeys = Object.keys(tracksList);
+      var widthDelta = 0;
+
+      var that = this;
+      this.trackSelections = [];
+
+      for( i = 0; i < tracksKeys.length; i++ ) {
+        var trackId = tracksKeys[i];
+
+        this.trackSelections[i] = this.add.bitmapText(0, 0, 'minecraftia', tracksList[tracksKeys[i]]);
+        this.trackSelections[i].align = 'left';
+        this.trackSelections[i].x = widthDelta;
+        this.trackSelections[i].y = this.game.height - this.trackSelections[i].textHeight;
+
+        if( i == 0 ) {
+          this.selectedTrack = trackId;
+          this.trackSelections[i].tint = 0xFF0000;
+        }
+
+        this.trackSelections[i].inputEnabled = true;
+        (function(trackId, currentId, that) {
+          that.trackSelections[i].events.onInputDown.add(function() {
+            for( var j = 0; j < that.trackSelections.length; j++ ) {
+              if( j == currentId ) {
+                that.trackSelections[j].tint = 0xFF0000;
+                that.selectedTrack = trackId;
+              } else {
+                that.trackSelections[j].tint = 0xFFFFFF;
+              }
+            }
+          }, this);
+        })(trackId, i, that);
+
+        widthDelta += this.trackSelections[i].textWidth + 30;
+      }
 
       size = this.playerTitle.textHeight;
       for (i = 0; i < this.maxPlayer; i++){
