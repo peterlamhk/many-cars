@@ -139,10 +139,10 @@
 "meta": {
 	"app": "http://www.codeandweb.com/texturepacker",
 	"version": "1.0",
-	"image": "cars.png",
+	"image": "car_spritesheet.png",
 	"format": "RGBA8888",
 	"size": {"w":64,"h":225},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:7cb6ee581dd271d6edec6223881d60c1:97cbca5593c3f2707a9e4910e60cdd60:76643c3195b82b5daf4c2278b6d42f60$"
+	"smartupdate": "$TexturePacker:SmartUpdate:bd3596d6e1b28e7ece8057cd870f6209:97cbca5593c3f2707a9e4910e60cdd60:86e21de8ecccb29b89c820fe81585444$"
 }
 }
