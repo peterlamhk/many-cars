@@ -53,25 +53,25 @@
       if (!this.finishTime) {
         if (this.currentSpeed > 250) {
           this.baseSpeed = 0.25;
-          this.steeringMultiplier = this.cursors.up.isDown ? 1 : 2;
+          this.steeringMultiplier = this.control.up ? 1 : 2;
         } else if (this.currentSpeed > 200) {
           this.baseSpeed = 0.5;
-          this.steeringMultiplier = this.cursors.up.isDown ? 1.5 : 2;
+          this.steeringMultiplier = this.control.up ? 1.5 : 2;
         } else if (this.currentSpeed > 150) {
           this.baseSpeed = 0.75;
-          this.steeringMultiplier = this.cursors.up.isDown ? 1.5 : 2;
+          this.steeringMultiplier = this.control.up ? 1.5 : 2;
         } else {
           this.baseSpeed = 1;
           this.steeringMultiplier = 2;
         }
 
-        if (this.cursors.left.isDown) {
+        if (this.control.left) {
           if (this.currentSpeed > 0) {
             this.steeringAngle = this.steeringAngle > 0 ? this.steeringAngle - this.steeringMultiplier : 359;
           } else if (this.currentSpeed < 0) {
             this.steeringAngle = this.steeringAngle < 359 ? this.steeringAngle + this.steeringMultiplier : 0;
           }
-        } else if (this.cursors.right.isDown) {
+        } else if (this.control.right) {
           if (this.currentSpeed > 0) {
             this.steeringAngle = this.steeringAngle < 359 ? this.steeringAngle + this.steeringMultiplier : 0;
           } else if (this.currentSpeed < 0) {
@@ -79,7 +79,7 @@
           }
         }
 
-        if (this.cursors.left.isDown || this.cursors.right.isDown) {
+        if (this.control.left || this.control.right) {
           var angle = this.steeringAngle-270;
           if (angle < 0){
             angle += 360;
@@ -98,7 +98,7 @@
           this.car.frame = frame;
         }
 
-        if (this.cursors.up.isDown) {
+        if (this.control.up) {
           if (this.currentSpeed < 300) {
             this.currentSpeed += this.baseSpeed;
           }
@@ -122,7 +122,7 @@
               this.velocityFromAngle(this.steeringAngle, this.backwardSpeed, this.car.body.velocity);
             }
           }
-        } else if (this.cursors.down.isDown) {
+        } else if (this.control.down) {
           if (this.currentSpeed > -100) {
             this.currentSpeed -= 4;
           } else if (this.backwardSpeed > -100) {
@@ -141,7 +141,7 @@
           }
         }
 
-        if (!this.cursors.up.isDown) {
+        if (!this.control.up) {
           if (this.skiddingSpeed > 0) {
             this.skiddingSpeed -= 1;
           }
@@ -161,6 +161,118 @@
         } else if (!this.drifting) {
           this.drifting = true;
         }
+
+
+        // if (this.currentSpeed > 250) {
+        //   this.baseSpeed = 0.25;
+        //   this.steeringMultiplier = this.cursors.up.isDown ? 1 : 2;
+        // } else if (this.currentSpeed > 200) {
+        //   this.baseSpeed = 0.5;
+        //   this.steeringMultiplier = this.cursors.up.isDown ? 1.5 : 2;
+        // } else if (this.currentSpeed > 150) {
+        //   this.baseSpeed = 0.75;
+        //   this.steeringMultiplier = this.cursors.up.isDown ? 1.5 : 2;
+        // } else {
+        //   this.baseSpeed = 1;
+        //   this.steeringMultiplier = 2;
+        // }
+
+        // if (this.cursors.left.isDown) {
+        //   if (this.currentSpeed > 0) {
+        //     this.steeringAngle = this.steeringAngle > 0 ? this.steeringAngle - this.steeringMultiplier : 359;
+        //   } else if (this.currentSpeed < 0) {
+        //     this.steeringAngle = this.steeringAngle < 359 ? this.steeringAngle + this.steeringMultiplier : 0;
+        //   }
+        // } else if (this.cursors.right.isDown) {
+        //   if (this.currentSpeed > 0) {
+        //     this.steeringAngle = this.steeringAngle < 359 ? this.steeringAngle + this.steeringMultiplier : 0;
+        //   } else if (this.currentSpeed < 0) {
+        //     this.steeringAngle = this.steeringAngle > 0 ? this.steeringAngle - this.steeringMultiplier : 359;
+        //   }
+        // }
+
+        // if (this.cursors.left.isDown || this.cursors.right.isDown) {
+        //   var angle = this.steeringAngle-270;
+        //   if (angle < 0){
+        //     angle += 360;
+        //   }
+
+        //   var frame = Math.floor(angle * (16*2) / 360);
+        //   if (frame>16){
+        //     this.car.scale.x = -1;
+        //     frame = 16*2 - frame;
+        //   } else {
+        //     this.car.scale.x = 1;
+        //     if (angle > 90 && frame === 16){
+        //       frame=16;
+        //     }
+        //   }
+        //   this.car.frame = frame;
+        // }
+
+        // if (this.cursors.up.isDown) {
+        //   if (this.currentSpeed < 300) {
+        //     this.currentSpeed += this.baseSpeed;
+        //   }
+        //   if (this.backwardSpeed < 0) {
+        //     this.backwardSpeed += this.baseSpeed;
+        //   }
+
+        //   if (this.currentSpeed > 250 && this.skiddingSpeed < 100) {
+        //     this.skiddingSpeed += 1;
+        //   }
+
+        //   if (this.drifting) {
+        //     if (this.reduceSpeed) {
+        //       this.currentSpeed *= 0.75;
+        //       this.reduceSpeed = false;
+        //     }
+
+        //     if (this.currentSpeed >= 0) {
+        //       this.velocityFromAngle(this.steeringAngle, this.currentSpeed, this.car.body.velocity);
+        //     } else {
+        //       this.velocityFromAngle(this.steeringAngle, this.backwardSpeed, this.car.body.velocity);
+        //     }
+        //   }
+        // } else if (this.cursors.down.isDown) {
+        //   if (this.currentSpeed > -100) {
+        //     this.currentSpeed -= 4;
+        //   } else if (this.backwardSpeed > -100) {
+        //     this.backwardSpeed -= 4;
+        //   }
+        // } else {
+        //   if (this.currentSpeed > 2) {
+        //     this.currentSpeed -= 2;
+        //     this.backwardSpeed -= 2;
+        //   } else if (this.currentSpeed < -2) {
+        //     this.currentSpeed += 2;
+        //     this.backwardSpeed += 2;
+        //   } else {
+        //     this.currentSpeed = 0;
+        //     this.backwardSpeed = 0;
+        //   }
+        // }
+
+        // if (!this.cursors.up.isDown) {
+        //   if (this.skiddingSpeed > 0) {
+        //     this.skiddingSpeed -= 1;
+        //   }
+
+        //   if (this.drifting) {
+        //     this.reduceSpeed = true;
+        //   }
+        // }
+
+        // if (!this.skiddingSpeed) {
+        //   if (this.currentSpeed >= 0) {
+        //     this.velocityFromAngle(this.steeringAngle, this.currentSpeed, this.car.body.velocity);
+        //   } else {
+        //     this.velocityFromAngle(this.steeringAngle, this.backwardSpeed, this.car.body.velocity);
+        //   }
+        //   this.drifting = false;
+        // } else if (!this.drifting) {
+        //   this.drifting = true;
+        // }
       } else {
         this.velocityFromAngle(this.steeringAngle, 0, this.car.body.velocity);
       }
