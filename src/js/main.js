@@ -11,6 +11,7 @@ window.onload = function () {
   game.state.add('room', ns.Room);
   game.state.add('game', ns.Game);
   game.state.add('control', ns.Control);
+  game.state.add('result', ns.Result);
   /* yo phaser:state new-state-files-put-here */
 
   game.state.start('boot');
