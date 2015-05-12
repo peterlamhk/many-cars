@@ -1,12 +1,9 @@
 (function() {
   'use strict';
 
-  function Car(index, game, material) {
-    var x = game.width / 2,
-        y = game.height / 2;
-
+  function Car(index, game, material, x, y) {
     this.game = game;
-    this.steeringAngle = 270;
+    this.steeringAngle = 0;
     this.steeringMultiplier = 2;
     this.currentSpeed = 0;
     this.baseSpeed = 0;
@@ -19,7 +16,7 @@
     this.car.anchor.set(0.5);
     this.car.name = index;
 
-    this.car.frame = 0;
+    this.car.frame = 8;
 
     game.physics.p2.enable(this.car);
     this.car.body.setCircle(10);
@@ -36,6 +33,10 @@
     this.control.down = false;
     this.control.left = false;
     this.control.right = false;
+
+    this.lap = 0;
+    this.crossLine = false;
+    this.finishTime = null;
   }
 
   Car.prototype = {
@@ -49,115 +50,231 @@
       return point;
     },
     update: function() {
-      if (this.currentSpeed > 250) {
-        this.baseSpeed = 0.25;
-        this.steeringMultiplier = this.control.up ? 1 : 2;
-      } else if (this.currentSpeed > 200) {
-        this.baseSpeed = 0.5;
-        this.steeringMultiplier = this.control.up ? 1.5 : 2;
-      } else if (this.currentSpeed > 150) {
-        this.baseSpeed = 0.75;
-        this.steeringMultiplier = this.control.up ? 1.5 : 2;
-      } else {
-        this.baseSpeed = 1;
-        this.steeringMultiplier = 2;
-      }
-
-      if (this.control.left) {
-        if (this.currentSpeed > 0) {
-          this.steeringAngle = this.steeringAngle > 0 ? this.steeringAngle - this.steeringMultiplier : 359;
-        } else if (this.currentSpeed < 0) {
-          this.steeringAngle = this.steeringAngle < 359 ? this.steeringAngle + this.steeringMultiplier : 0;
-        }
-      } else if (this.control.right) {
-        if (this.currentSpeed > 0) {
-          this.steeringAngle = this.steeringAngle < 359 ? this.steeringAngle + this.steeringMultiplier : 0;
-        } else if (this.currentSpeed < 0) {
-          this.steeringAngle = this.steeringAngle > 0 ? this.steeringAngle - this.steeringMultiplier : 359;
-        }
-      }
-
-      if (this.control.left || this.control.right) {
-        var angle = this.steeringAngle-270;
-        if (angle < 0){
-          angle += 360;
-        }
-
-        var frame = Math.floor(angle * (16*2) / 360);
-        if (frame>16){
-          this.car.scale.x = -1;
-          frame = 16*2 - frame;
+      if (!this.finishTime) {
+        if (this.currentSpeed > 250) {
+          this.baseSpeed = 0.25;
+          this.steeringMultiplier = this.control.up ? 1 : 2;
+        } else if (this.currentSpeed > 200) {
+          this.baseSpeed = 0.5;
+          this.steeringMultiplier = this.control.up ? 1.5 : 2;
+        } else if (this.currentSpeed > 150) {
+          this.baseSpeed = 0.75;
+          this.steeringMultiplier = this.control.up ? 1.5 : 2;
         } else {
-          this.car.scale.x = 1;
-          if (angle > 90 && frame === 16){
-            frame=16;
+          this.baseSpeed = 1;
+          this.steeringMultiplier = 2;
+        }
+
+        if (this.control.left) {
+          if (this.currentSpeed > 0) {
+            this.steeringAngle = this.steeringAngle > 0 ? this.steeringAngle - this.steeringMultiplier : 359;
+          } else if (this.currentSpeed < 0) {
+            this.steeringAngle = this.steeringAngle < 359 ? this.steeringAngle + this.steeringMultiplier : 0;
+          }
+        } else if (this.control.right) {
+          if (this.currentSpeed > 0) {
+            this.steeringAngle = this.steeringAngle < 359 ? this.steeringAngle + this.steeringMultiplier : 0;
+          } else if (this.currentSpeed < 0) {
+            this.steeringAngle = this.steeringAngle > 0 ? this.steeringAngle - this.steeringMultiplier : 359;
           }
         }
-        this.car.frame = frame;
-      }
 
-      if (this.control.up) {
-        if (this.currentSpeed < 300) {
-          this.currentSpeed += this.baseSpeed;
-        }
-        if (this.backwardSpeed < 0) {
-          this.backwardSpeed += this.baseSpeed;
-        }
-
-        if (this.currentSpeed > 250 && this.skiddingSpeed < 100) {
-          this.skiddingSpeed += 1;
-        }
-
-        if (this.drifting) {
-          if (this.reduceSpeed) {
-            this.currentSpeed *= 0.75;
-            this.reduceSpeed = false;
+        if (this.control.left || this.control.right) {
+          var angle = this.steeringAngle-270;
+          if (angle < 0){
+            angle += 360;
           }
 
+          var frame = Math.floor(angle * (16*2) / 360);
+          if (frame>16){
+            this.car.scale.x = -1;
+            frame = 16*2 - frame;
+          } else {
+            this.car.scale.x = 1;
+            if (angle > 90 && frame === 16){
+              frame=16;
+            }
+          }
+          this.car.frame = frame;
+        }
+
+        if (this.control.up) {
+          if (this.currentSpeed < 300) {
+            this.currentSpeed += this.baseSpeed;
+          }
+          if (this.backwardSpeed < 0) {
+            this.backwardSpeed += this.baseSpeed;
+          }
+
+          if (this.currentSpeed > 250 && this.skiddingSpeed < 100) {
+            this.skiddingSpeed += 1;
+          }
+
+          if (this.drifting) {
+            if (this.reduceSpeed) {
+              this.currentSpeed *= 0.75;
+              this.reduceSpeed = false;
+            }
+
+            if (this.currentSpeed >= 0) {
+              this.velocityFromAngle(this.steeringAngle, this.currentSpeed, this.car.body.velocity);
+            } else {
+              this.velocityFromAngle(this.steeringAngle, this.backwardSpeed, this.car.body.velocity);
+            }
+          }
+        } else if (this.control.down) {
+          if (this.currentSpeed > -100) {
+            this.currentSpeed -= 4;
+          } else if (this.backwardSpeed > -100) {
+            this.backwardSpeed -= 4;
+          }
+        } else {
+          if (this.currentSpeed > 2) {
+            this.currentSpeed -= 2;
+            this.backwardSpeed -= 2;
+          } else if (this.currentSpeed < -2) {
+            this.currentSpeed += 2;
+            this.backwardSpeed += 2;
+          } else {
+            this.currentSpeed = 0;
+            this.backwardSpeed = 0;
+          }
+        }
+
+        if (!this.control.up) {
+          if (this.skiddingSpeed > 0) {
+            this.skiddingSpeed -= 1;
+          }
+
+          if (this.drifting) {
+            this.reduceSpeed = true;
+          }
+        }
+
+        if (!this.skiddingSpeed) {
           if (this.currentSpeed >= 0) {
             this.velocityFromAngle(this.steeringAngle, this.currentSpeed, this.car.body.velocity);
           } else {
             this.velocityFromAngle(this.steeringAngle, this.backwardSpeed, this.car.body.velocity);
           }
+          this.drifting = false;
+        } else if (!this.drifting) {
+          this.drifting = true;
         }
-      } else if (this.control.down) {
-        if (this.currentSpeed > -100) {
-          this.currentSpeed -= 4;
-        } else if (this.backwardSpeed > -100) {
-          this.backwardSpeed -= 4;
-        }
+
+
+        // if (this.currentSpeed > 250) {
+        //   this.baseSpeed = 0.25;
+        //   this.steeringMultiplier = this.cursors.up.isDown ? 1 : 2;
+        // } else if (this.currentSpeed > 200) {
+        //   this.baseSpeed = 0.5;
+        //   this.steeringMultiplier = this.cursors.up.isDown ? 1.5 : 2;
+        // } else if (this.currentSpeed > 150) {
+        //   this.baseSpeed = 0.75;
+        //   this.steeringMultiplier = this.cursors.up.isDown ? 1.5 : 2;
+        // } else {
+        //   this.baseSpeed = 1;
+        //   this.steeringMultiplier = 2;
+        // }
+
+        // if (this.cursors.left.isDown) {
+        //   if (this.currentSpeed > 0) {
+        //     this.steeringAngle = this.steeringAngle > 0 ? this.steeringAngle - this.steeringMultiplier : 359;
+        //   } else if (this.currentSpeed < 0) {
+        //     this.steeringAngle = this.steeringAngle < 359 ? this.steeringAngle + this.steeringMultiplier : 0;
+        //   }
+        // } else if (this.cursors.right.isDown) {
+        //   if (this.currentSpeed > 0) {
+        //     this.steeringAngle = this.steeringAngle < 359 ? this.steeringAngle + this.steeringMultiplier : 0;
+        //   } else if (this.currentSpeed < 0) {
+        //     this.steeringAngle = this.steeringAngle > 0 ? this.steeringAngle - this.steeringMultiplier : 359;
+        //   }
+        // }
+
+        // if (this.cursors.left.isDown || this.cursors.right.isDown) {
+        //   var angle = this.steeringAngle-270;
+        //   if (angle < 0){
+        //     angle += 360;
+        //   }
+
+        //   var frame = Math.floor(angle * (16*2) / 360);
+        //   if (frame>16){
+        //     this.car.scale.x = -1;
+        //     frame = 16*2 - frame;
+        //   } else {
+        //     this.car.scale.x = 1;
+        //     if (angle > 90 && frame === 16){
+        //       frame=16;
+        //     }
+        //   }
+        //   this.car.frame = frame;
+        // }
+
+        // if (this.cursors.up.isDown) {
+        //   if (this.currentSpeed < 300) {
+        //     this.currentSpeed += this.baseSpeed;
+        //   }
+        //   if (this.backwardSpeed < 0) {
+        //     this.backwardSpeed += this.baseSpeed;
+        //   }
+
+        //   if (this.currentSpeed > 250 && this.skiddingSpeed < 100) {
+        //     this.skiddingSpeed += 1;
+        //   }
+
+        //   if (this.drifting) {
+        //     if (this.reduceSpeed) {
+        //       this.currentSpeed *= 0.75;
+        //       this.reduceSpeed = false;
+        //     }
+
+        //     if (this.currentSpeed >= 0) {
+        //       this.velocityFromAngle(this.steeringAngle, this.currentSpeed, this.car.body.velocity);
+        //     } else {
+        //       this.velocityFromAngle(this.steeringAngle, this.backwardSpeed, this.car.body.velocity);
+        //     }
+        //   }
+        // } else if (this.cursors.down.isDown) {
+        //   if (this.currentSpeed > -100) {
+        //     this.currentSpeed -= 4;
+        //   } else if (this.backwardSpeed > -100) {
+        //     this.backwardSpeed -= 4;
+        //   }
+        // } else {
+        //   if (this.currentSpeed > 2) {
+        //     this.currentSpeed -= 2;
+        //     this.backwardSpeed -= 2;
+        //   } else if (this.currentSpeed < -2) {
+        //     this.currentSpeed += 2;
+        //     this.backwardSpeed += 2;
+        //   } else {
+        //     this.currentSpeed = 0;
+        //     this.backwardSpeed = 0;
+        //   }
+        // }
+
+        // if (!this.cursors.up.isDown) {
+        //   if (this.skiddingSpeed > 0) {
+        //     this.skiddingSpeed -= 1;
+        //   }
+
+        //   if (this.drifting) {
+        //     this.reduceSpeed = true;
+        //   }
+        // }
+
+        // if (!this.skiddingSpeed) {
+        //   if (this.currentSpeed >= 0) {
+        //     this.velocityFromAngle(this.steeringAngle, this.currentSpeed, this.car.body.velocity);
+        //   } else {
+        //     this.velocityFromAngle(this.steeringAngle, this.backwardSpeed, this.car.body.velocity);
+        //   }
+        //   this.drifting = false;
+        // } else if (!this.drifting) {
+        //   this.drifting = true;
+        // }
       } else {
-        if (this.currentSpeed > 2) {
-          this.currentSpeed -= 2;
-          this.backwardSpeed -= 2;
-        } else if (this.currentSpeed < -2) {
-          this.currentSpeed += 2;
-          this.backwardSpeed += 2;
-        } else {
-          this.currentSpeed = 0;
-          this.backwardSpeed = 0;
-        }
-      }
-
-      if (!this.control.up) {
-        if (this.skiddingSpeed > 0) {
-          this.skiddingSpeed -= 1;
-        }
-
-        if (this.drifting) {
-          this.reduceSpeed = true;
-        }
-      }
-
-      if (!this.skiddingSpeed) {
-        if (this.currentSpeed >= 0) {
-          this.velocityFromAngle(this.steeringAngle, this.currentSpeed, this.car.body.velocity);
-        } else {
-          this.velocityFromAngle(this.steeringAngle, this.backwardSpeed, this.car.body.velocity);
-        }
-        this.drifting = false;
-      } else if (!this.drifting) {
-        this.drifting = true;
+        this.velocityFromAngle(this.steeringAngle, 0, this.car.body.velocity);
       }
     }
   }
@@ -185,15 +302,17 @@
   function CheckPoint(index, game, material, x, y, r) {
     this.game = game;
 
-    var circleShape = new p2.Circle(r);
+    var circleShape = new p2.Rectangle(r, r);
     circleShape.sensor = true;
 
-    this.name = index;
-    this.body = game.physics.p2.createBody(x, y, 0, true);
-    this.body.debug = true;
-    this.body.clearShapes();
-    this.body.addShape(circleShape);
-    this.body.setMaterial(material);
+    this.checkpoint = game.add.sprite(x, y, 'zero');
+    this.checkpoint.name = index;
+    game.physics.p2.enable(this.checkpoint, true);
+
+    this.checkpoint.body.static = true;
+    this.checkpoint.body.clearShapes();
+    this.checkpoint.body.addShape(circleShape);
+    this.checkpoint.body.setMaterial(material);
   }
 
   CheckPoint.prototype ={
@@ -204,7 +323,9 @@
     this.cars = {};
     this.gameStarted = false;
     this.checkpoints = [];
-    this.cp = [{x: 274, y: 490, r: 2}, {x: 878, y: 439, r: 2}, {x: 510, y: 54, r: 2}];
+    this.cp = [{x: 290, y: 490, r: 5}, {x: 878, y: 439, r: 5}, {x: 510, y: 54, r: 5}];
+    this.cpArray = [];
+    this.totalLap = 3;
   }
 
   Game.prototype = {
@@ -232,9 +353,30 @@
         this.timerText.y = 30;
         this.timerText.anchor.set(0.5);
 
+        this.rankText = this.add.bitmapText(0, 0, 'minecraftia', '' );
+        this.rankText.x = 30;
+        this.rankText.y = 0;
+
         this.startTime = this.game.time.time;
         this.gameStarted = true;
       }, this);
+    },
+    updateRank: function() {
+      if (this.gameStarted) {
+        var that = this;
+        var text = '';
+        Object.keys(this.cars).forEach(function(key) {
+          if (that.cars[key].lap == that.totalLap) {
+            if (!that.cars[key].finishTime) {
+              that.cars[key].finishTime = that.timerText.text;
+            }
+            text += 'Player ' + that.cars[key].car.name + ': ' + that.cars[key].finishTime + '\n';
+          } else {
+            text += 'Player ' + that.cars[key].car.name + ': ' + (parseInt(that.cars[key].lap) + 1) + '/' + that.totalLap + '\n';
+          }
+        });
+        this.rankText.setText(text);
+      }
     },
     updateTimer: function() {
       if (this.gameStarted) {
@@ -313,23 +455,46 @@
       this.track1.track.body.setCollisionGroup(trackCollisionGroup);
       this.track1.track.body.collides(carCollisionGroup, this.hitTrack, this);
 
+
+      for (var i = 0; i < 3; i++) {
+        this.checkpoints.push(new CheckPoint(i, this.game, checkpointMaterial, this.cp[i].x, this.cp[i].y, this.cp[i].r));
+        this.checkpoints[i].checkpoint.body.setCollisionGroup(checkpointCollisionGroup);
+        this.checkpoints[i].checkpoint.body.collides(carCollisionGroup);
+      }
+
       for( var i = 1; i <= 4; i++ ) {
         if( viewer.latestPlayerList.indexOf(i) != -1 ) {
-          this.cars[i] = new Car(i, this.game, carMaterial);
+          this.cars[i] = new Car(i, this.game, carMaterial, 250, 490);
 
           this.cars[i].car.body.setCollisionGroup(carCollisionGroup);
           this.cars[i].car.body.collides([carCollisionGroup, trackCollisionGroup, checkpointCollisionGroup]);
+
+          this.cars[i].car.body.onBeginContact.add(function() {
+            var idx = i;
+            return function(body, shapeA, shapeB, equation) {
+              if (body.sprite.name != this.track1.name) {
+                var cpLength = this.cpArray.length;
+                if (cpLength == 3) {
+                  this.cpArray = [];
+
+                  this.cars[idx].crossLine = true;
+                }
+
+                this.cpArray.push(body.sprite.name);
+                if (cpLength == this.cpArray[cpLength]) {
+                  console.log(body.sprite.name);
+
+                  if (this.cars[idx].crossLine) {
+                    this.cars[idx].lap += 1
+                    this.cars[idx].crossLine = false;
+                  }
+                } else {
+                  this.cpArray.pop();
+                }
+              }
+            }
+          }(), this);
         }
-      }
-
-      for (var i = 0; i < 3; i++) {
-        this.checkpoints.push(new CheckPoint(0, this.game, checkpointMaterial, this.cp[i].x, this.cp[i].y, this.cp[i].r));
-        this.checkpoints[i].body.setCollisionGroup(checkpointCollisionGroup);
-        this.checkpoints[i].body.collides(carCollisionGroup);
-        this.checkpoints[i].body.onBeginContact.add(function() {
-          console.log('onBeginContact');
-        }, this);
-
       }
 
       // this.cursors = this.game.input.keyboard.createCursorKeys();
@@ -346,11 +511,14 @@
 
     update: function() {
       var that = this;
-      Object.keys(this.cars).forEach(function(key) {
-        that.cars[key].update();
-      });
-      this.updateCarLocations();
-      this.updateTimer();
+      if (this.gameStarted) {
+        Object.keys(this.cars).forEach(function(key) {
+          that.cars[key].update();
+        });
+        this.updateCarLocations();
+        this.updateTimer();
+        this.updateRank();
+      }
     },
 
     updateCarLocations: function() {
