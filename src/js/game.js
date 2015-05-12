@@ -235,6 +235,7 @@
     this.cpArray = [];
     this.totalLap = 1;
     this.countDownTimer = 30;
+    this.gameOver = false;
   }
 
   Game.prototype = {
@@ -274,6 +275,7 @@
       if (this.gameStarted) {
         var that = this;
         var text = '';
+        var stillRunning = false;
         Object.keys(this.cars).forEach(function(key) {
           if (that.cars[key].lap == that.totalLap) {
             if (!that.cars[key].finishTime) {
@@ -283,9 +285,18 @@
             text += 'P' + that.cars[key].car.name + ': ' + that.cars[key].finishTime + '\n';
           } else {
             text += 'P' + that.cars[key].car.name + ': ' + (parseInt(that.cars[key].lap) + 1) + '/' + that.totalLap + '\n';
+            stillRunning = true;
           }
         });
         this.rankText.setText(text);
+
+        if (!stillRunning || this.countDownTimer < 0) {
+          this.readyText.setText('Game Over');
+
+          this.game.time.events.add(5000, function() {
+            this.game.state.start('result');
+          }, this);
+        }
       }
     },
     updateTimer: function() {
