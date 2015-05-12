@@ -34,7 +34,7 @@
     },
 
     onDown: function () {
-      if (!this.game.device.desktop){
+      if (this.game.device.desktop){
         this.game.state.start('room');
       } else{
         this.game.state.start('lobby');

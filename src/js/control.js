@@ -47,6 +47,8 @@
 
       var x = this.game.width / 10 * 4
         , y = this.game.height / 2;
+
+    // var _x = this.game.width / 10 *
         // this.add.image(0, 0, 'bg');
 
         // this.sprite = this.add.sprite(400, 350, 'ship');
@@ -81,7 +83,7 @@
         graphics.beginFill(0x0000FF, 1);
         graphics.drawRect(this.clickableAreaLeft.x, this.clickableAreaLeft.y, this.clickableAreaLeft.width, this.clickableAreaLeft.height);
         graphics.beginFill(0x00FF00, 1);
-        graphics.drawRect(this.clickableAreaRight.x, this.clickableAreaRight.y, this.clickableAreaRight.width, this.clickableAreaRight.height);
+        // graphics.drawRect(this.clickableAreaRight.x, this.clickableAreaRight.y, this.clickableAreaRight.width, this.clickableAreaRight.height);
 
         this.buttonUp = this.add.sprite(x, y, 'buttons');
         this.buttonUp.anchor.set(0.5);
