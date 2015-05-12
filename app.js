@@ -139,6 +139,7 @@ io.on('connection', function(socket) {
         }
 
         sessionId = requestRoom;
+        socket.join(sessionId);        
         gameRooms[sessionId]['players'][playerId] = socket.client.id;
         callback({
             success: true,
