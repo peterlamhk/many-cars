@@ -181,6 +181,24 @@
   }
 
   Game.prototype = {
+    startTimer: function() {
+      var that = this;
+      this.readyText = this.add.bitmapText(0, 0, 'minecraftia', 'Ready' );
+      this.readyText.align = 'center';
+      this.readyText.x = this.game.width / 2;
+      this.readyText.y = this.game.height / 2;
+      this.readyText.anchor.set(0.5);
+
+      var textArray = ['3', '2', '1', 'Go!', ''];
+      for (var i = 0; i < textArray.length; i++) {
+        this.game.time.events.add((i+1)*1000+3, function() {
+          var text = textArray[i];
+          return function() {
+            that.readyText.setText(text);
+          }
+        }(), this);
+      }
+    },
     hitTrack: function(body1, body2) {
       // this.currentSpeed -= 50;
     },
@@ -244,6 +262,8 @@
 
       // this.cursors = this.game.input.keyboard.createCursorKeys();
       this.game.input.onDown.add(this.click, this);
+
+      this.startTimer();
     },
 
     update: function() {
