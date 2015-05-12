@@ -120,16 +120,20 @@
         this.debugText.anchor.set(0.5);
         this.debugText.align = 'center';
 
-        window.ondevicemotion = function(event) {  
-            var accelerationX = event.accelerationIncludingGravity.x;  
-            var accelerationY = event.accelerationIncludingGravity.y;  
-            var accelerationZ = event.accelerationIncludingGravity.z; 
-
-            this.debugText.setText('x: '+ accelerationX +', y: '+accelerationY +', z: '+accelerationZ);
-        }  
+        if(window.DeviceMotionEvent){
+            window.addEventListener('devicemotion', motion, false);
+        }else{
+            this.debugText.setText('DeviceMotionEvent is not supported');
+        }
     },
 
 
+    motion: function(event){
+        var accelerationX = event.accelerationIncludingGravity.x;  
+        var accelerationY = event.accelerationIncludingGravity.y;  
+        var accelerationZ = event.accelerationIncludingGravity.z; 
+        this.debugText.setText('x: '+ accelerationX +', y: '+accelerationY +', z: '+accelerationZ);
+    },
 
     update: function () {
 
