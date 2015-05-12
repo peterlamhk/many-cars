@@ -8,8 +8,7 @@ var gulp = require('gulp')
   , processhtml = require('gulp-processhtml')
   , jshint = require('gulp-jshint')
   , uglify = require('gulp-uglify')
-  , connect = require('gulp-connect')
-  , server = require('gulp-express')
+  , gls = require('gulp-live-server')
   , paths;
 
 paths = {
@@ -78,47 +77,14 @@ gulp.task('lint', function() {
     .on('error', gutil.log);
 });
 
-gulp.task('html', function(){
-  gulp.src('src/*.html')
-    .pipe(connect.reload())
-    .on('error', gutil.log);
-});
+gulp.task('serve', function () {
+  var server = gls.new('app.js');
+  server.start();
 
-gulp.task('connect', function () {
-  connect.server({
-    root: [__dirname + '/src'],
-    port: 9000,
-    livereload: true
-  });
-});
-
-gulp.task('server', function () {
-  // Start the server at the beginning of the task
-  server.run(['app.js']);
-
-  // // Restart the server when file changes
-  // gulp.watch(['app/**/*.html'], server.notify);
-  // gulp.watch(['app/styles/**/*.scss'], ['styles:scss']);
-  // //gulp.watch(['{.tmp,app}/styles/**/*.css'], ['styles:css', server.notify]);
-  // //Event object won't pass down to gulp.watch's callback if there's more than one of them.
-  // //So the correct way to use server.notify is as following:
-  // gulp.watch(['{.tmp,app}/styles/**/*.css'], function(event){
-  //   gulp.run('styles:css');
-  //   server.notify(event);
-  //   //pipe support is added for server.notify since v0.1.5,
-  //   //see https://github.com/gimm/gulp-express#servernotifyevent
-  // });
-
-  // gulp.watch(['app/scripts/**/*.js'], ['jshint']);
-  // gulp.watch(['app/images/**/*'], server.notify);
-  // gulp.watch(['app.js', 'routes/**/*.js'], [server.run]);
-});
-
-gulp.task('watch', function () {
   gulp.watch(paths.js, ['lint']);
-  gulp.watch(['./src/index.html', paths.css, paths.js], ['html']);
+  gulp.watch(['./src/index.html', paths.css, paths.js], server.notify);
+  gulp.watch('app.js', server.start);
 });
 
-// gulp.task('default', ['connect', 'watch']);
-gulp.task('default', ['server', 'watch']);
+gulp.task('default', ['serve']);
 gulp.task('build', ['copy-assets', 'copy-vendor', 'uglify', 'minifycss', 'processhtml', 'minifyhtml']);
