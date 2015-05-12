@@ -26,7 +26,7 @@
     this.car.body.setMaterial(material);
 
     this.cursors = game.input.keyboard.createCursorKeys();
-
+    
     // remote control touch status
     this.control = {};
     this.control.up = false;

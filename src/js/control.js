@@ -43,10 +43,12 @@
     },
 
     preload: function(){
-        this.load.atlas('buttons', 'assets/arrow_button_spritesheet.png', 'assets/arrow_button_spritesheet.json');
+        this.load.atlas('buttons', 'assets/arrow_spritesheet.png', 'assets/arrow_spritesheet.json');
       // this.game.load.spritesheet('button', 'assets/arrow_button_spritesheet.png', 114, 94);
-      // this.load.image('ship', 'assets/virtualjoystick/thrust.png');
-      // this.load.image('bg', 'assets/virtualjoystick/sky2.png');
+      this.load.image('green', 'assets/00ff00.png');
+      this.load.image('purple', 'assets/8a00ff.png');
+      this.load.image('red', 'assets/ff4e8d.png');
+      this.load.image('yellow', 'assets/fff000.png');
     },
 
     create: function () {
@@ -58,6 +60,9 @@
 
         var _x = this.game.width - x;
         // this.add.image(0, 0, 'bg');
+
+        this.sprite = this.add.sprite(width/2, height/2, 'green');
+        this.sprite.anchor.set(0.5);
 
         // this.sprite = this.add.sprite(400, 350, 'ship');
         // this.sprite.texture.baseTexture.scaleMode = PIXI.NEAREST;
@@ -84,14 +89,14 @@
 
         
         var graphics = this.game.add.graphics(0, 0);
-        graphics.beginFill(0xFFFFFF, 1);
-        graphics.drawRect(this.clickableAreaUp.x, this.clickableAreaUp.y, this.clickableAreaUp.width, this.clickableAreaUp.height);
-        graphics.beginFill(0xFF0000, 1);
-        graphics.drawRect(this.clickableAreaDown.x, this.clickableAreaDown.y, this.clickableAreaDown.width, this.clickableAreaDown.height);
-        graphics.beginFill(0x0000FF, 1);
-        graphics.drawRect(this.clickableAreaLeft.x, this.clickableAreaLeft.y, this.clickableAreaLeft.width, this.clickableAreaLeft.height);
-        graphics.beginFill(0x00FF00, 1);
-        graphics.drawRect(this.clickableAreaRight.x, this.clickableAreaRight.y, this.clickableAreaRight.width, this.clickableAreaRight.height);
+        // graphics.beginFill(0xFFFFFF, 1);
+        // graphics.drawRect(this.clickableAreaUp.x, this.clickableAreaUp.y, this.clickableAreaUp.width, this.clickableAreaUp.height);
+        // graphics.beginFill(0xFF0000, 1);
+        // graphics.drawRect(this.clickableAreaDown.x, this.clickableAreaDown.y, this.clickableAreaDown.width, this.clickableAreaDown.height);
+        // graphics.beginFill(0x0000FF, 1);
+        // graphics.drawRect(this.clickableAreaLeft.x, this.clickableAreaLeft.y, this.clickableAreaLeft.width, this.clickableAreaLeft.height);
+        // graphics.beginFill(0x00FF00, 1);
+        // graphics.drawRect(this.clickableAreaRight.x, this.clickableAreaRight.y, this.clickableAreaRight.width, this.clickableAreaRight.height);
 
         this.buttonUp = this.add.sprite(x, y, 'buttons');
         this.buttonUp.anchor.set(0.5);
