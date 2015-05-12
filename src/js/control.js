@@ -42,13 +42,13 @@
     },
 
     create: function () {
-      var width = this.game.width
+        var width = this.game.width
         , height = this.game.height;
 
-      var x = this.game.width / 10 * 4
+        var x = this.game.width / 10 * 4
         , y = this.game.height / 2;
 
-    // var _x = this.game.width / 10 *
+        var _x = this.game.width - x;
         // this.add.image(0, 0, 'bg');
 
         // this.sprite = this.add.sprite(400, 350, 'ship');
@@ -68,8 +68,8 @@
         // this.buttonA.alignBottomRight(20);
         this.clickableAreaUp = new Phaser.Rectangle(0, 0, x, y);
         this.clickableAreaDown = new Phaser.Rectangle(0, y, x, y);
-        this.clickableAreaLeft = new Phaser.Rectangle(x, 0, x, height);
-        this.clickableAreaRight = new Phaser.Rectangle(x*1.75, 0, x, height);
+        this.clickableAreaLeft = new Phaser.Rectangle(x, 0, _x/2, height);
+        this.clickableAreaRight = new Phaser.Rectangle(x+_x/2, 0, _x/2, height);
 
         this.input.onDown.add(this.onDown, this);
         this.input.onUp.add(this.onUp, this);
@@ -83,7 +83,7 @@
         graphics.beginFill(0x0000FF, 1);
         graphics.drawRect(this.clickableAreaLeft.x, this.clickableAreaLeft.y, this.clickableAreaLeft.width, this.clickableAreaLeft.height);
         graphics.beginFill(0x00FF00, 1);
-        // graphics.drawRect(this.clickableAreaRight.x, this.clickableAreaRight.y, this.clickableAreaRight.width, this.clickableAreaRight.height);
+        graphics.drawRect(this.clickableAreaRight.x, this.clickableAreaRight.y, this.clickableAreaRight.width, this.clickableAreaRight.height);
 
         this.buttonUp = this.add.sprite(x, y, 'buttons');
         this.buttonUp.anchor.set(0.5);
