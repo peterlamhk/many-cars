@@ -144,7 +144,16 @@
 
     update: function() {
         if( remote.motion != null && remote.motion.x != null ) {
-            this.debugText.setText('x: '+ remote.motion.x +', y: '+ remote.motion.y +', z: '+ remote.motion.z);
+            if( remote.motion.y <= -4 ) {
+                this.control.left = false;
+                this.control.right = true;
+            } else if( remote.motion.y >= 4 ) {
+                this.control.left = true;
+                this.control.right = false;
+            } else {
+                this.control.left = false;
+                this.control.right = false;
+            }
         } else {
             this.debugText.setText('Accelerometer control is not supported');
             this.debugText.tint = 0xFF9966;
