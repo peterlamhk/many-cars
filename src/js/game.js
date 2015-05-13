@@ -251,7 +251,7 @@
       {cp: [{x: 642, y: 226, r: 5}, {x: 118, y: 97, r: 5}, {x: 182, y: 445, r: 5}], start: {x: 575, y: 225}, angle: 0, rt: {x: 514, y: 330}},
       {cp: [{x: 290, y: 488, r: 4.5}, {x: 745, y: 228, r: 5}, {x: 510, y: 45, r: 4}], start: {x: 225, y: 495}, angle: 0, rt: {x: 20, y: 0}} ];
 
-    this.totalLap = 1;
+    this.totalLap = 3;
     this.countDownTimer = 30;
     this.gameOver = false;
     this.result = {};
