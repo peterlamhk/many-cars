@@ -86,19 +86,19 @@
 
             playerRecord.rank = that.add.bitmapText(0, 0, 'minecraftia', key);
             playerRecord.rank.align = 'left';
-            playerRecord.rank.tint = that.color[key-1];
+            playerRecord.rank.tint = that.color[gameResult[key].playerId-1];
             playerRecord.rank.x = that.orderTitle.x;
             playerRecord.rank.y = currentY
 
             playerRecord.player = that.add.bitmapText(0, 0, 'minecraftia', 'Player ' + gameResult[key].playerId);
             playerRecord.player.align = 'left';
-            playerRecord.player.tint = that.color[key-1];
+            playerRecord.player.tint = that.color[gameResult[key].playerId-1];
             playerRecord.player.x = that.playerTitle.x;
             playerRecord.player.y = currentY;
 
             playerRecord.time = that.add.bitmapText(0, 0, 'minecraftia', gameResult[key].time);
             playerRecord.time.align = 'left';
-            playerRecord.time.tint = that.color[key-1];
+            playerRecord.time.tint = that.color[gameResult[key].playerId-1];
             playerRecord.time.x = that.timeTitle.x;
             playerRecord.time.y = currentY;
 
