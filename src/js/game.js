@@ -246,6 +246,7 @@
   Game.prototype = {
     startTimer: function() {
       this.readyText = this.add.bitmapText(0, 0, 'minecraftia', 'Ready' );
+      this.readyText.tint = 0x3F55DB;
       this.readyText.align = 'center';
       this.readyText.x = this.game.width / 2;
       this.readyText.y = this.game.height / 2;
@@ -263,6 +264,7 @@
 
       this.game.time.events.add(4000, function() {
         this.timerText = this.add.bitmapText(0, 0, 'minecraftia', '00:00:00' );
+        this.timerText.tint = 0x3F55DB;
         this.timerText.align = 'center';
         this.timerText.x = this.game.width - 100;
         this.timerText.y = 30;

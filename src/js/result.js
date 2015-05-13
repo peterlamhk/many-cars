@@ -10,6 +10,8 @@
     this.playerTxt = [];
     this.selectedTrack = null;
 
+    this.restartBtn = null;
+
     this.maxPlayer = 4;
     this.color = [0xfff000, 0x00ff00, 0xff4e8d, 0x8a00ff];
   }
@@ -37,13 +39,19 @@
         this.titleTxt.y = this.titleTxt.textHeight / 2;
 
         // draw restart text (click to load Room)
-        this.restartTxt = this.add.bitmapText(0, 0, 'minecraftia', 'Restart game');
-        this.restartTxt.align = 'right';
-        this.restartTxt.x = this.game.width - this.restartTxt.textWidth;
-        this.restartTxt.y = this.game.height - this.restartTxt.textHeight;
+        // this.restartTxt = this.add.bitmapText(0, 0, 'minecraftia', 'Restart game');
+        // this.restartTxt.align = 'right';
+        // this.restartTxt.x = this.game.width - this.restartTxt.textWidth;
+        // this.restartTxt.y = this.game.height - this.restartTxt.textHeight;
 
-        this.restartTxt.inputEnabled = true;
-        this.restartTxt.events.onInputDown.add(function() {
+        this.restartBtn = this.game.add.sprite(0, 0, 'restart');
+        // this.restartBtn.anchor.set(0.5);
+        this.restartBtn.scale.x = this.restartBtn.scale.y = 0.5;
+        this.restartBtn.x = this.game.width - this.restartBtn.width;
+        this.restartBtn.y = this.game.height - this.restartBtn.height;
+
+        this.restartBtn.inputEnabled = true;
+        this.restartBtn.events.onInputDown.add(function() {
             that.game.state.start('room');
         }, this);
 

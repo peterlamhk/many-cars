@@ -5,6 +5,8 @@
     this.titleTxt = null;
     this.startTxt = null;
 
+    this.joinSprite = null;
+
     this.sessionTxt = null;
 
     this.rectWidth = 100;
@@ -42,14 +44,21 @@
       graphics.drawRect(x-this.rectWidth/2, y-this.rectHeight*2.5, this.rectWidth, this.rectHeight);
 
       this.titleTxt = this.add.bitmapText(x, y, 'minecraftia', 'Input Session Number:' );
+      this.titleTxt.tint = 0x3F55DB;
       this.titleTxt.align = 'center';
       this.titleTxt.x = x - this.titleTxt.textWidth / 2;
       this.titleTxt.y = y - this.rectHeight - this.titleTxt.textHeight*4 - this.padding;
 
-      this.startTxt = this.add.bitmapText(x, y, 'minecraftia', 'Next' );
-      this.startTxt.align = 'center';
-      this.startTxt.x = x - this.startTxt.textWidth / 2;
-      this.startTxt.y = y + this.rectHeight + this.startTxt.height + this.padding*9;
+      // this.startTxt = this.add.bitmapText(x, y, 'minecraftia', 'Next' );
+      // this.startTxt.align = 'center';
+      // this.startTxt.x = x - this.startTxt.textWidth / 2;
+      // this.startTxt.y = y + this.rectHeight + this.startTxt.height + this.padding*9;
+
+      this.joinSprite = this.game.add.sprite(x,y,'join');
+      this.joinSprite.anchor.set(0.5);
+      this.joinSprite.scale.x = this.joinSprite.scale.y = 0.5;
+      this.joinSprite.x = x;
+      this.joinSprite.y = y + this.rectHeight*3;
 
       this.sessionTxt = this.add.bitmapText(x, y, 'minecraftia', '0000' );
       this.sessionTxt.align = 'center';
@@ -61,11 +70,12 @@
       this.game.input.keyboard.addCallbacks(this, null, null, this.keyPress);
 
       // Initiate Event Listener
-      this.startTxt.inputEnabled = true;
-      this.startTxt.events.onInputDown.add(this.onDown, this);
+      this.joinSprite.inputEnabled = true;
+      this.joinSprite.events.onInputDown.add(this.onDown, this);
 
       for (i = 0; i < 10;i++){
         this.numberTxt.push(this.add.bitmapText(x, y, 'minecraftia', ''+i ));
+        this.numberTxt[i].tint = 0x3F55DB;
         this.numberTxt[i].align = 'center';
         this.numberTxt[i].x = this.game.width/2 - (i-5) * 70 - 60;
         // this.numberTxt[i].x = x - this.numberTxt[i].textWidth /2 - (i-5) *this.numberTxt[i].width*2.5 - this.numberTxt[i].width*1.8;

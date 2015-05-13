@@ -3,11 +3,13 @@
 
   function Room() {
     this.titleTxt = null;
-    this.startTxt = null;
+    // this.startTxt = null;
     this.playerTitle = null;
     this.playerTxt = [];
     this.playerList = [];
     this.selectedTrack = null;
+
+    this.startBtn = null;
 
     this.maxPlayer = 4;
     this.rectWidth = 50;
@@ -29,22 +31,31 @@
       this.bg.anchor.set(0.5);
 
       this.titleTxt = this.add.bitmapText(0, 0, 'minecraftia', 'Room ' + this.game.session );
+      this.titleTxt.tint = 0x3F55DB;
       this.titleTxt.align = 'center';
       this.titleTxt.x = this.titleTxt.textWidth / 2;
       this.titleTxt.y = this.titleTxt.textHeight / 2;
 
       this.playerTitle = this.add.bitmapText(0, 0, 'minecraftia', 'Game Players:' );
+      this.playerTitle.tint = 0x3F55DB;
       this.titleTxt.align = 'left';
       this.playerTitle.x = this.titleTxt.textWidth / 2;
       this.playerTitle.y = this.titleTxt.y + this.titleTxt.textHeight +this.playerTitle.textHeight / 2;
 
-      this.startTxt = this.add.bitmapText(0, 0, 'minecraftia', 'Start Game' );
-      this.titleTxt.align = 'right';
-      this.startTxt.x = this.game.width - this.startTxt.textWidth;
-      this.startTxt.y = this.game.height - this.startTxt.textHeight;
+      // this.startTxt = this.add.bitmapText(0, 0, 'minecraftia', 'Start Game' );
+      // this.startTxt.tint = 0x3F55DB;
+      // this.titleTxt.align = 'right';
+      // this.startTxt.x = this.game.width - this.startTxt.textWidth;
+      // this.startTxt.y = this.game.height - this.startTxt.textHeight;
 
-      this.startTxt.inputEnabled = true;
-      this.startTxt.events.onInputDown.add(this.onStartButtonDown, this);
+      this.startBtn = this.game.add.sprite(x, y, 'play');
+      // this.startBtn.anchor.set(0.5);
+      this.startBtn.scale.x = this.startBtn.scale.y = 0.5;
+      this.startBtn.x = this.game.width - this.startBtn.width - 10;
+      this.startBtn.y = this.game.height - this.startBtn.height - 10;
+
+      this.startBtn.inputEnabled = true;
+      this.startBtn.events.onInputDown.add(this.onStartButtonDown, this);
 
       this.tracksList = {
         track1: 'Track#1',
@@ -62,6 +73,7 @@
         var trackId = tracksKeys[i];
 
         this.trackSelections[i] = this.add.bitmapText(0, 0, 'minecraftia', this.tracksList[tracksKeys[i]]);
+        this.trackSelections[i].tint = 0x3F55DB;
         this.trackSelections[i].align = 'left';
         this.trackSelections[i].x = widthDelta;
         this.trackSelections[i].y = this.game.height - this.trackSelections[i].textHeight;
@@ -76,10 +88,11 @@
           that.trackSelections[i].events.onInputDown.add(function() {
             for( var j = 0; j < that.trackSelections.length; j++ ) {
               if( j == currentId ) {
-                that.trackSelections[j].tint = 0xFF0000;
+              that.trackSelections[j].tint = 0xFF0000;
                 that.selectedTrack = trackId;
               } else {
-                that.trackSelections[j].tint = 0xFFFFFF;
+                // that.trackSelections[j].tint = 0xFFFFFF;
+                that.trackSelections[j].tint = 0x3F55DB;
               }
             }
           }, this);
