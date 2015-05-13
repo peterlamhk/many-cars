@@ -38,10 +38,10 @@
             if( data.success ) {
                 $("button.btn-newroom").prop("disabled", true);
 
-                sessionId = data.roomId;
-                playerId = data.playerId;
+                remote.sessionId = data.roomId;
+                remote.playerId = data.playerId;
 
-                callback(playerId);
+                callback(remote.playerId);
             } else {
                 callback(data.reason);
             }
