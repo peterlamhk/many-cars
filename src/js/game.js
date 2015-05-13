@@ -40,7 +40,7 @@
     this.lap = 0;
     this.crossLine = false;
     this.finishTime = null;
-    this.debug = true;
+    this.debug = false;
   }
 
   Car.prototype = {
@@ -236,6 +236,7 @@
     this.totalLap = 1;
     this.countDownTimer = 30;
     this.gameOver = false;
+    this.result = {};
   }
 
   Game.prototype = {
@@ -279,6 +280,8 @@
         Object.keys(this.cars).forEach(function(key) {
           if (that.cars[key].lap == that.totalLap) {
             if (!that.cars[key].finishTime) {
+              var resultLength = Object.keys(that.result).length;
+              that.result[resultLength+1] = {playerId: key, time: that.timerText.text};
               that.cars[key].finishTime = that.timerText.text;
               that.game.time.events.loop(Phaser.Timer.SECOND, that.updateCountDown, that);
             }
@@ -294,6 +297,7 @@
           this.readyText.setText('Game Over');
 
           this.game.time.events.add(5000, function() {
+            console.log(this.result);
             this.game.state.start('result');
           }, this);
         }
