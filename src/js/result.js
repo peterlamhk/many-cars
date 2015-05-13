@@ -11,7 +11,7 @@
     this.selectedTrack = null;
 
     this.maxPlayer = 4;
-    this.color = [0xFFFF00, 0x0FF00, 0xFF0000, 0x0000FF];
+    this.color = [0xfff000, 0x00ff00, 0xff4e8d, 0x8a00ff];
   }
 
   Result.prototype = {
