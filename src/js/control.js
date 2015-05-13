@@ -132,6 +132,7 @@
         this.debugText = this.add.bitmapText(width/2, 20, 'minecraftia', '0, 0, 0' );
         this.debugText.anchor.set(0.5);
         this.debugText.align = 'center';
+        this.debugText.tint = 0xFF9966;
 
         if (window.DeviceMotionEvent) {
             window.addEventListener('devicemotion', this.motion, false);
@@ -147,16 +148,18 @@
             if( remote.motion.y <= -4 ) {
                 this.control.left = false;
                 this.control.right = true;
+                this.debugText.setText('>>>');
             } else if( remote.motion.y >= 4 ) {
                 this.control.left = true;
                 this.control.right = false;
+                this.debugText.setText('<<<');
             } else {
                 this.control.left = false;
                 this.control.right = false;
+                this.debugText.setText('^^^');
             }
         } else {
             this.debugText.setText('Accelerometer control is not supported');
-            this.debugText.tint = 0xFF9966;
         }
     },
 
