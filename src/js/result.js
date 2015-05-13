@@ -11,9 +11,10 @@
     this.selectedTrack = null;
 
     this.restartBtn = null;
-
     this.maxPlayer = 4;
     this.color = [0xfff000, 0x00ff00, 0xff4e8d, 0x8a00ff];
+
+    this.bg = null;
   }
 
   Result.prototype = {
@@ -30,6 +31,9 @@
         // };
 
         var gameResult = this.result;
+
+        this.bg = this.game.add.sprite(this.game.width/2, this.game.height/2, 'brown');
+        this.bg.anchor.set(0.5);
 
         // draw result page title
         this.titleTxt = this.add.bitmapText(0, 0, 'minecraftia', 'Result');
@@ -59,19 +63,19 @@
         var tableTitleY = this.titleTxt.y + 60;
         this.orderTitle = this.add.bitmapText(0, 0, 'minecraftia', '#');
         this.orderTitle.align = 'left';
-        this.orderTitle.tint = 0xFF9966;
+        this.orderTitle.tint = 0x223344;
         this.orderTitle.x = this.titleTxt.x + 40;
         this.orderTitle.y = tableTitleY;
 
         this.playerTitle = this.add.bitmapText(0, 0, 'minecraftia', 'Player');
         this.playerTitle.align = 'left';
-        this.playerTitle.tint = 0xFF9966;
+        this.playerTitle.tint = 0x223344;
         this.playerTitle.x = this.orderTitle.x + 100;
         this.playerTitle.y = tableTitleY;
 
         this.timeTitle = this.add.bitmapText(0, 0, 'minecraftia', 'Time');
         this.timeTitle.align = 'left';
-        this.timeTitle.tint = 0xFF9966;
+        this.timeTitle.tint = 0x223344;
         this.timeTitle.x = this.playerTitle.x + 300;
         this.timeTitle.y = tableTitleY;
 
