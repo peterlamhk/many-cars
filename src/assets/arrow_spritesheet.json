@@ -1,0 +1,36 @@
+{"frames": [
+
+{
+	"filename": "down.png",
+	"frame": {"x":2,"y":2,"w":112,"h":88},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":112,"h":88},
+	"sourceSize": {"w":112,"h":88}
+},
+{
+	"filename": "out.png",
+	"frame": {"x":116,"y":2,"w":112,"h":88},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":112,"h":88},
+	"sourceSize": {"w":112,"h":88}
+},
+{
+	"filename": "over.png",
+	"frame": {"x":230,"y":2,"w":112,"h":88},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":112,"h":88},
+	"sourceSize": {"w":112,"h":88}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "arrow_spritesheet.png",
+	"format": "RGBA8888",
+	"size": {"w":344,"h":92},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:2b77ef1b3603d75c0d38c4a88989dccc:ca9204b7acee4887579ce47a490c402f:4a6098dc6115e46093af0441747c3014$"
+}
+}
