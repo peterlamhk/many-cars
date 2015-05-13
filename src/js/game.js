@@ -310,7 +310,7 @@
               }
             });
             this.game.state.states['result'].result = this.result;
-            // this.game.state.start('result');
+            this.game.state.start('result');
           }, this);
         }
       }
