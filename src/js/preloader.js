@@ -23,6 +23,11 @@
       this.load.atlas('cars', 'assets/car_spritesheet.png', 'assets/car_spritesheet.json');
       this.load.image('track1', 'assets/track1.png');
       this.load.image('zero', 'assets/FFFFFF-0.png');
+      this.load.image('background', 'assets/background.png');
+      this.load.image('start', 'assets/start.png');
+      this.load.image('restart', 'assets/restart.png');
+      this.load.image('play', 'assets/play.png');
+      this.load.image('join', 'assets/join.png');
 
       this.load.physics('physicsData', 'assets/physicsData.json');
     },
