@@ -51,6 +51,7 @@
       var that = this;
       this.trackSelections = [];
 
+      this.playerTxt = [];
       for( i = 0; i < tracksKeys.length; i++ ) {
         var trackId = tracksKeys[i];
 
@@ -96,6 +97,9 @@
         that.playerList = list;
         that.updatePlayers();
       })
+
+      this.playerList = viewer.latestPlayerList;
+      this.updatePlayers();
     },
 
     updatePlayers: function(){
