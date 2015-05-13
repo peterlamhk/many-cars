@@ -450,8 +450,14 @@
         this.updateCarLocations();
         this.updateTimer();
         this.updateRank();
+        this.updateCameraLocation();
       }
     },
+
+    updateCameraLocation: function(){
+      this.game.camera.x = 100;
+      this.game.camera.y = 100;
+    }
 
     updateCarLocations: function() {
       var data = {}, that = this;
