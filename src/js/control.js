@@ -33,9 +33,12 @@
     this.control.left = false;
     this.control.right = false;
 
-    this.accelerometerRotateBackDelay = 40;
-    this.lastAccelerometerRotateTime = 0;
-    this.lastAccelerometerRotateType = 0;
+    this.btncontrol = {};
+    this.btncontrol.left = false;
+    this.btncontrol.right = false;
+
+    this.accelerometerUpdateInterval = 3;
+    this.lastAccelerometerUpdate = 0;
 
     this.debugText = null;
   }
@@ -140,6 +143,7 @@
 
         if (window.DeviceMotionEvent) {
             window.addEventListener('devicemotion', this.motion, false);
+            this.debugText.setText('');
         }
     },
 
@@ -148,52 +152,39 @@
     },
 
     update: function() {
-        if( remote.motion != null && remote.motion.x != null ) {
+        if( remote.motion != null && remote.motion.y != null ) {
             var isStraightForward = false;
+            var lastControl = this.control;
 
-            if( remote.motion.y <= -3 ) {
+            if( remote.motion.y <= -3 || this.btncontrol.right ) {
                 this.control.left = false;
                 this.control.right = true;
-                this.lastAccelerometerRotateType = -1;
                 this.debugText.setText('>>>');
-                this.lastAccelerometerRotateTime = this.accelerometerRotateBackDelay;
 
-            } else if( remote.motion.y >= 3 ) {
+            } else if( remote.motion.y >= 3 || this.btncontrol.left ) {
                 this.control.left = true;
                 this.control.right = false;
-                this.lastAccelerometerRotateType = 1;
                 this.debugText.setText('<<<');
-                this.lastAccelerometerRotateTime = this.accelerometerRotateBackDelay;
 
             } else {
-                isStraightForward = true;
+                if( !this.btncontrol.right && !this.btncontrol.left ) {
+                    isStraightForward = true;
+                }
+
+                this.debugText.setText('---');
             }
 
             if( isStraightForward ) {
-                if( this.lastAccelerometerRotateTime > 0 &&
-                    this.lastAccelerometerRotateType == -1 ) {
-                    // last rotate is right, turn some left for forward
-                    this.control.left = true;
-                    this.control.right = false;
-                    this.debugText.setText('<^^' + this.lastAccelerometerRotateTime);
-
-                } else if( this.lastAccelerometerRotateTime > 0 &&
-                    this.lastAccelerometerRotateType == 1 ) {
-                    // last rotate is left, turn some right for forward
-                    this.control.left = false;
-                    this.control.right = true;
-                    this.debugText.setText('^^>' + this.lastAccelerometerRotateTime);
-
-                } else {
-                    this.control.left = false;
-                    this.control.right = false;
-                    this.debugText.setText('^^^');
-                }
+                this.control.left = false;
+                this.control.right = false;
             }
 
-            if( this.lastAccelerometerRotateTime > 0 ) {
-                this.lastAccelerometerRotateTime--;
-            }
+            if( this.lastAccelerometerUpdate == 0 ) {
+                this.updateControl();
+                this.lastAccelerometerUpdate = this.accelerometerUpdateInterval;
+            } else {
+                this.lastAccelerometerUpdate--;
+            }            
         } else {
             this.debugText.setText('Accelerometer control is not supported');
         }
@@ -211,9 +202,11 @@
         this.buttonDown.frame = 0;
       } else if (this.clickableAreaLeft.contains(x, y)){
         this.control.left = true;
+        this.btncontrol.left = true;
         this.buttonLeft.frame = 0;
       } else if (this.clickableAreaRight.contains(x, y)){
         this.control.right = true;
+        this.btncontrol.right = true;
         this.buttonRight.frame = 0;
       }
 
@@ -231,9 +224,11 @@
             this.buttonDown.frame = 1;
         } else if (this.clickableAreaLeft.contains(x, y)){
             this.control.left = false;
+            this.btncontrol.left = false;
             this.buttonLeft.frame = 1;
         } else if (this.clickableAreaRight.contains(x, y)){
             this.control.right = false;
+            this.btncontrol.right = false;
             this.buttonRight.frame = 1;
         }
 
