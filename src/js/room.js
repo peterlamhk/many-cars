@@ -21,6 +21,12 @@
 
     create: function () {
       var size=0, i=0;
+      var x = this.game.width / 2
+        , y = this.game.height / 2;
+
+
+      this.bg = this.add.sprite(x,y,'brown');
+      this.bg.anchor.set(0.5);
 
       this.titleTxt = this.add.bitmapText(0, 0, 'minecraftia', 'Room ' + this.game.session );
       this.titleTxt.align = 'center';
