@@ -29,6 +29,7 @@
 
     viewer.initRmChangeListener = function(callbackRmChange) {
         // listen to room player change
+        socket.removeListener('roomUpdate');
         socket.on('roomUpdate', function(data) {
             viewer.latestPlayerList = data;
             callbackRmChange(data);
@@ -37,6 +38,7 @@
 
     viewer.initPlayerMoveListener = function(callbackPlayerChange) {
         // listen to players' actions
+        socket.removeListener('playerMove');
         socket.on('playerMove', function(data) {
             callbackPlayerChange(data.player, data.move);
         });
@@ -57,5 +59,9 @@
 
     viewer.updateMobileDisplay = function(data) {
         socket.emit('mobileDisplay', data);
+    }
+
+    viewer.updateMobileDisplayTrack = function(data) {
+        socket.emit('mobileDisplayTrack', data);
     }
 })();

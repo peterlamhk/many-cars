@@ -312,6 +312,7 @@
               }
             });
             this.game.state.states['result'].result = this.result;
+            viewer.updateMobileDisplayTrack(false); // back to colored background
             this.game.state.start('result');
           }, this);
         }
@@ -372,6 +373,8 @@
       contactMaterial.frictionRelaxation = 3;
       contactMaterial.surfaceVelocity = 0;
 
+      viewer.updateMobileDisplayTrack(this.selectedTrack);
+
       this.track = new Track(this.selectedTrack, this.game, trackMaterial);
       this.track.track.body.setCollisionGroup(trackCollisionGroup);
       this.track.track.body.collides([carCollisionGroup]);
@@ -397,7 +400,6 @@
           this.cars[i].car.body.onBeginContact.add(function(body, shapeA, shapeB, equation) {
             var idx = i;
             return function(body, shapeA, shapeB, equation) {
-              console.log('haha: ' + body.sprite.name);
               if (body.sprite.name != this.track.name) {
                 var cpLength = this.cpArray.length;
                 if (cpLength == 3) {
@@ -407,14 +409,13 @@
                 }
 
                 this.cpArray.push(body.sprite.name);
-                if (cpLength == this.cpArray[cpLength]) {
-                  console.log(body.sprite.name);
 
-                  if (this.cars[idx].crossLine) {
-                    this.cars[idx].lap += 1
-                    this.cars[idx].crossLine = false;
-                  }
-                } else {
+                if (this.cars[idx].crossLine) {
+                  this.cars[idx].lap += 1
+                  this.cars[idx].crossLine = false;
+                }
+
+                if (cpLength != this.cpArray[cpLength])  {
                   this.cpArray.pop();
                 }
               }
@@ -451,7 +452,8 @@
       Object.keys(this.cars).forEach(function(key) {
         data[key] = {
           x: that.cars[key].car.x,
-          y: that.cars[key].car.y
+          y: that.cars[key].car.y,
+          angle: that.cars[key].car.steeringAngle
         };
       });
 
