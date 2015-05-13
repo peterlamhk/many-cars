@@ -33,6 +33,10 @@
     this.control.left = false;
     this.control.right = false;
 
+    this.accelerometerRotateBackDelay = 40;
+    this.lastAccelerometerRotateTime = 0;
+    this.lastAccelerometerRotateType = 0;
+
     this.debugText = null;
   }
 
@@ -61,10 +65,9 @@
         var _x = this.game.width - x;
         // this.add.image(0, 0, 'bg');
 
-        var colorArr = ['green', 'purple', 'red', 'yellow'];
-        var id = remote.playerid;
-        id = 1 // for testing
-        this.sprite = this.add.sprite(width/2, height/2, colorArr[id]);
+        var colorArr = ['yellow', 'green', 'red', 'purple'];
+        var id = remote.playerId;
+        this.sprite = this.add.sprite(width/2, height/2, colorArr[id-1]);
         this.sprite.anchor.set(0.5);
 
         // this.sprite = this.add.sprite(400, 350, 'ship');
@@ -133,31 +136,73 @@
         this.debugText = this.add.bitmapText(width/2, 20, 'minecraftia', '0, 0, 0' );
         this.debugText.anchor.set(0.5);
         this.debugText.align = 'center';
+        this.debugText.tint = 0xFF9966;
 
-        if(window.DeviceMotionEvent){
-            window.addEventListener('devicemotion', motion, false);
-        }else{
-            this.debugText.setText('DeviceMotionEvent is not supported');
+        if (window.DeviceMotionEvent) {
+            window.addEventListener('devicemotion', this.motion, false);
         }
     },
 
-
     motion: function(event){
-        var accelerationX = event.accelerationIncludingGravity.x;  
-        var accelerationY = event.accelerationIncludingGravity.y;  
-        var accelerationZ = event.accelerationIncludingGravity.z; 
-        this.debugText.setText('x: '+ accelerationX +', y: '+accelerationY +', z: '+accelerationZ);
+        remote.motion = event.accelerationIncludingGravity;
     },
 
-    update: function () {
+    update: function() {
+        if( remote.motion != null && remote.motion.x != null ) {
+            var isStraightForward = false;
 
+            if( remote.motion.y <= -3 ) {
+                this.control.left = false;
+                this.control.right = true;
+                this.lastAccelerometerRotateType = -1;
+                this.debugText.setText('>>>');
+                this.lastAccelerometerRotateTime = this.accelerometerRotateBackDelay;
+
+            } else if( remote.motion.y >= 3 ) {
+                this.control.left = true;
+                this.control.right = false;
+                this.lastAccelerometerRotateType = 1;
+                this.debugText.setText('<<<');
+                this.lastAccelerometerRotateTime = this.accelerometerRotateBackDelay;
+
+            } else {
+                isStraightForward = true;
+            }
+
+            if( isStraightForward ) {
+                if( this.lastAccelerometerRotateTime > 0 &&
+                    this.lastAccelerometerRotateType == -1 ) {
+                    // last rotate is right, turn some left for forward
+                    this.control.left = true;
+                    this.control.right = false;
+                    this.debugText.setText('<^^' + this.lastAccelerometerRotateTime);
+
+                } else if( this.lastAccelerometerRotateTime > 0 &&
+                    this.lastAccelerometerRotateType == 1 ) {
+                    // last rotate is left, turn some right for forward
+                    this.control.left = false;
+                    this.control.right = true;
+                    this.debugText.setText('^^>' + this.lastAccelerometerRotateTime);
+
+                } else {
+                    this.control.left = false;
+                    this.control.right = false;
+                    this.debugText.setText('^^^');
+                }
+            }
+
+            if( this.lastAccelerometerRotateTime > 0 ) {
+                this.lastAccelerometerRotateTime--;
+            }
+        } else {
+            this.debugText.setText('Accelerometer control is not supported');
+        }
     },
 
     onDown: function (pointer) {
         var x = pointer.positionDown.x;
         var y = pointer.positionDown.y;
 
-      // this.game.state.start('room');
       if (this.clickableAreaUp.contains(x, y)){
         this.control.up = true;
         this.buttonUp.frame = 0;
