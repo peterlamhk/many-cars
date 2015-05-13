@@ -31,7 +31,7 @@
       this.titleTxt.align = 'left';
       this.playerTitle.x = this.titleTxt.textWidth / 2;
       this.playerTitle.y = this.titleTxt.y + this.titleTxt.textHeight +this.playerTitle.textHeight / 2;
-      
+
       this.startTxt = this.add.bitmapText(0, 0, 'minecraftia', 'Start Game' );
       this.titleTxt.align = 'right';
       this.startTxt.x = this.game.width - this.startTxt.textWidth;
@@ -40,12 +40,12 @@
       this.startTxt.inputEnabled = true;
       this.startTxt.events.onInputDown.add(this.onStartButtonDown, this);
 
-      var tracksList = {
+      this.tracksList = {
         track1: 'Track#1',
         track2: 'Track#2',
         track3: 'Track#3',
       };
-      var tracksKeys = Object.keys(tracksList);
+      var tracksKeys = Object.keys(this.tracksList);
       var widthDelta = 0;
 
       var that = this;
@@ -54,7 +54,7 @@
       for( i = 0; i < tracksKeys.length; i++ ) {
         var trackId = tracksKeys[i];
 
-        this.trackSelections[i] = this.add.bitmapText(0, 0, 'minecraftia', tracksList[tracksKeys[i]]);
+        this.trackSelections[i] = this.add.bitmapText(0, 0, 'minecraftia', this.tracksList[tracksKeys[i]]);
         this.trackSelections[i].align = 'left';
         this.trackSelections[i].x = widthDelta;
         this.trackSelections[i].y = this.game.height - this.trackSelections[i].textHeight;
@@ -109,6 +109,8 @@
     },
 
     onStartButtonDown: function(){
+      this.game.state.states['game'].currentTrack = Object.keys(this.tracksList).indexOf(this.selectedTrack);
+      this.game.state.states['game'].selectedTrack = this.selectedTrack;
       this.game.state.start('game');
     }
   };
