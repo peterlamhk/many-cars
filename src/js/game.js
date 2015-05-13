@@ -450,7 +450,8 @@
       Object.keys(this.cars).forEach(function(key) {
         data[key] = {
           x: that.cars[key].car.x,
-          y: that.cars[key].car.y
+          y: that.cars[key].car.y,
+          angle: that.cars[key].car.steeringAngle
         };
       });
 
