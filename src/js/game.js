@@ -395,7 +395,6 @@
           this.cars[i].car.body.onBeginContact.add(function(body, shapeA, shapeB, equation) {
             var idx = i;
             return function(body, shapeA, shapeB, equation) {
-              console.log('haha: ' + body.sprite.name);
               if (body.sprite.name != this.track.name) {
                 var cpLength = this.cpArray.length;
                 if (cpLength == 3) {
@@ -405,14 +404,13 @@
                 }
 
                 this.cpArray.push(body.sprite.name);
-                if (cpLength == this.cpArray[cpLength]) {
-                  console.log(body.sprite.name);
 
-                  if (this.cars[idx].crossLine) {
-                    this.cars[idx].lap += 1
-                    this.cars[idx].crossLine = false;
-                  }
-                } else {
+                if (this.cars[idx].crossLine) {
+                  this.cars[idx].lap += 1
+                  this.cars[idx].crossLine = false;
+                }
+
+                if (cpLength != this.cpArray[cpLength])  {
                   this.cpArray.pop();
                 }
               }
