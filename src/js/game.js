@@ -12,6 +12,7 @@
     this.skiddingSpeed = 0;
     this.drifting = false;
     this.reduceSpeed = false;
+    this.onWall = false;
 
     this.car = game.add.sprite(x, y, 'cars');
     this.car.anchor.set(0.5);
@@ -64,6 +65,7 @@
           this.control.left = this.cursors.left.isDown;
           this.control.right = this.cursors.right.isDown;
         }
+
 
         if (this.currentSpeed > 250) {
           this.baseSpeed = 0.25;
@@ -130,6 +132,12 @@
               this.reduceSpeed = false;
             }
 
+            if (this.onWall) {
+              if (this.currentSpeed > 50) {
+                this.currentSpeed *= 0.9;
+              }
+            }
+
             if (this.currentSpeed >= 0) {
               this.velocityFromAngle(this.steeringAngle, this.currentSpeed, this.car.body.velocity);
             } else {
@@ -166,6 +174,12 @@
         }
 
         if (!this.skiddingSpeed) {
+          if (this.onWall) {
+            if (this.currentSpeed > 50) {
+              this.currentSpeed *= 0.9;
+            }
+          }
+
           if (this.currentSpeed >= 0) {
             this.velocityFromAngle(this.steeringAngle, this.currentSpeed, this.car.body.velocity);
           } else {
@@ -404,10 +418,12 @@
           this.cars[i].car.body.setCollisionGroup(carCollisionGroup);
           this.cars[i].car.body.collides([carCollisionGroup, trackCollisionGroup, checkpointCollisionGroup]);
 
-          this.cars[i].car.body.onBeginContact.add(function(body, shapeA, shapeB, equation) {
+          this.cars[i].car.body.onBeginContact.add(function() {
             var idx = i;
             return function(body, shapeA, shapeB, equation) {
-              if (body.sprite.name != this.track.name) {
+              if (!body) return;
+
+              if (body.sprite.name != this.track.track.name) {
                 this.cars[idx].cpArray.push(body.sprite.name);
 
                 if ((this.cars[idx].cpArray.length - 1) == this.cars[idx].cpArray[this.cars[idx].cpArray.length - 1]) {
@@ -425,6 +441,19 @@
                   this.cars[idx].crossLine = true;
                 }
                 // console.log(this.cars[idx].cpArray.length, this.cars[idx].crossLine, this.cars[idx].lap);
+              } else {
+                this.cars[idx].onWall = true;
+              }
+            }
+          }(), this);
+
+          this.cars[i].car.body.onEndContact.add(function() {
+            var idx = i;
+            return function(body, shapeA, shapeB, equation) {
+              if (!body) return;
+
+              if (body.sprite.name.length > 1) {
+                this.cars[idx].onWall = false;
               }
             }
           }(), this);
