@@ -184,6 +184,20 @@ io.on('connection', function(socket) {
         socket.in(sessionId).emit('updateCars', data);
     });
 
+    // handle update track display to all remote client
+    socket.on('mobileDisplayTrack', function(data) {
+        if( sessionId == null ||
+            playerId == null ||
+            playerId != 0 ) {
+            return callback({
+                success: false,
+                reason: 'Invalid client'
+            });
+        }
+
+        socket.in(sessionId).emit('trackChange', data);
+    });
+
     // handle client disconnection
     socket.on('disconnect', function() {
         socket.leave(sessionId);

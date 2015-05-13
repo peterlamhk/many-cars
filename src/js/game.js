@@ -310,6 +310,7 @@
               }
             });
             this.game.state.states['result'].result = this.result;
+            viewer.updateMobileDisplayTrack(false); // back to colored background
             this.game.state.start('result');
           }, this);
         }
@@ -369,6 +370,8 @@
       contactMaterial.frictionStiffness = 1e7;
       contactMaterial.frictionRelaxation = 3;
       contactMaterial.surfaceVelocity = 0;
+
+      viewer.updateMobileDisplayTrack(this.selectedTrack);
 
       this.track = new Track(this.selectedTrack, this.game, trackMaterial);
       this.track.track.body.setCollisionGroup(trackCollisionGroup);

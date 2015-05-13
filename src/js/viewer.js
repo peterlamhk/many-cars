@@ -60,4 +60,8 @@
     viewer.updateMobileDisplay = function(data) {
         socket.emit('mobileDisplay', data);
     }
+
+    viewer.updateMobileDisplayTrack = function(data) {
+        socket.emit('mobileDisplayTrack', data);
+    }
 })();
