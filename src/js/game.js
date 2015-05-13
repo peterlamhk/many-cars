@@ -42,6 +42,7 @@
     this.lap = 0;
     this.crossLine = false;
     this.finishTime = null;
+    this.cpArray = [];
     this.debug = false;
   }
 
@@ -236,7 +237,6 @@
       {cp: [{x: 642, y: 226, r: 5}, {x: 118, y: 97, r: 5}, {x: 182, y: 445, r: 5}], start: {x: 575, y: 225}, angle: 0, rt: {x: 514, y: 330}},
       {cp: [{x: 290, y: 488, r: 4.5}, {x: 745, y: 228, r: 5}, {x: 510, y: 45, r: 4}], start: {x: 225, y: 495}, angle: 0, rt: {x: 20, y: 0}} ];
 
-    this.cpArray = [];
     this.totalLap = 1;
     this.countDownTimer = 30;
     this.gameOver = false;
@@ -351,7 +351,6 @@
       this.cars = {};
       this.gameStarted = false;
       this.checkpoints = [];
-      this.cpArray = [];
       this.countDownTimer = 30;
       this.gameOver = false;
       this.result = {};
@@ -409,23 +408,23 @@
             var idx = i;
             return function(body, shapeA, shapeB, equation) {
               if (body.sprite.name != this.track.name) {
-                var cpLength = this.cpArray.length;
-                if (cpLength == 3) {
-                  this.cpArray = [];
+                this.cars[idx].cpArray.push(body.sprite.name);
 
-                  this.cars[idx].crossLine = true;
-                }
-
-                this.cpArray.push(body.sprite.name);
-
-                if (cpLength == this.cpArray[cpLength]) {
+                if ((this.cars[idx].cpArray.length - 1) == this.cars[idx].cpArray[this.cars[idx].cpArray.length - 1]) {
                   if (this.cars[idx].crossLine) {
                     this.cars[idx].lap += 1
                     this.cars[idx].crossLine = false;
                   }
                 } else {
-                  this.cpArray.pop();
+                  this.cars[idx].cpArray.pop();
                 }
+
+                if (this.cars[idx].cpArray.length == 3) {
+                  this.cars[idx].cpArray = [];
+
+                  this.cars[idx].crossLine = true;
+                }
+                // console.log(this.cars[idx].cpArray.length, this.cars[idx].crossLine, this.cars[idx].lap);
               }
             }
           }(), this);
