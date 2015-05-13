@@ -230,7 +230,7 @@
 
     this.checkpoint = game.add.sprite(x, y, 'zero');
     this.checkpoint.name = index;
-    game.physics.p2.enable(this.checkpoint, true);
+    game.physics.p2.enable(this.checkpoint);
 
     this.checkpoint.body.static = true;
     this.checkpoint.body.clearShapes();
@@ -287,6 +287,7 @@
         this.rankText = this.add.bitmapText(0, 0, 'minecraftia', '' );
         this.rankText.x = this.trackData[this.currentTrack].rt.x;
         this.rankText.y = this.trackData[this.currentTrack].rt.y;
+        this.rankText.tint = 0x3F55DB;
         this.rankText.scale.set(0.75, 0.75);
 
         this.startTime = this.game.time.time;
