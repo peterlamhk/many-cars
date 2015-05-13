@@ -47,8 +47,8 @@
             if( data.success ) {
                 $("button.btn-newroom").prop("disabled", true);
 
-                sessionId = data.roomId;
-                callback(sessionId);
+                viewer.sessionId = data.roomId;
+                callback(viewer.sessionId);
             } else {
                 console.log(data.reason);
             }
