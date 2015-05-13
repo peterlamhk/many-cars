@@ -345,6 +345,14 @@
       var x = this.game.width / 2,
           y = this.game.height / 2;
 
+      this.cars = {};
+      this.gameStarted = false;
+      this.checkpoints = [];
+      this.cpArray = [];
+      this.countDownTimer = 30;
+      this.gameOver = false;
+      this.result = {};
+
       this.game.physics.startSystem(Phaser.Physics.P2JS);
       this.game.physics.p2.setImpactEvents(true);
       this.game.physics.p2.gravity.y = 0;
@@ -405,12 +413,12 @@
 
                 this.cpArray.push(body.sprite.name);
 
-                if (this.cars[idx].crossLine) {
-                  this.cars[idx].lap += 1
-                  this.cars[idx].crossLine = false;
-                }
-
-                if (cpLength != this.cpArray[cpLength])  {
+                if (cpLength == this.cpArray[cpLength]) {
+                  if (this.cars[idx].crossLine) {
+                    this.cars[idx].lap += 1
+                    this.cars[idx].crossLine = false;
+                  }
+                } else {
                   this.cpArray.pop();
                 }
               }
