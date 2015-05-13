@@ -3,6 +3,7 @@
 
     remote.sessionId = null;
     remote.playerId = null;
+    remote.motion = null;
     var socket = null;
     remote.init = function() {
         // initialize socket.io and events

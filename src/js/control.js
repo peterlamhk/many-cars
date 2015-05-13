@@ -133,30 +133,28 @@
         this.debugText.anchor.set(0.5);
         this.debugText.align = 'center';
 
-        if(window.DeviceMotionEvent){
-            window.addEventListener('devicemotion', motion, false);
-        }else{
-            this.debugText.setText('DeviceMotionEvent is not supported');
+        if (window.DeviceMotionEvent) {
+            window.addEventListener('devicemotion', this.motion, false);
         }
     },
 
-
     motion: function(event){
-        var accelerationX = event.accelerationIncludingGravity.x;  
-        var accelerationY = event.accelerationIncludingGravity.y;  
-        var accelerationZ = event.accelerationIncludingGravity.z; 
-        this.debugText.setText('x: '+ accelerationX +', y: '+accelerationY +', z: '+accelerationZ);
+        remote.motion = event.accelerationIncludingGravity;
     },
 
-    update: function () {
-
+    update: function() {
+        if( remote.motion != null && remote.motion.x != null ) {
+            this.debugText.setText('x: '+ remote.motion.x +', y: '+ remote.motion.y +', z: '+ remote.motion.z);
+        } else {
+            this.debugText.setText('Accelerometer control is not supported');
+            this.debugText.tint = 0xFF9966;
+        }
     },
 
     onDown: function (pointer) {
         var x = pointer.positionDown.x;
         var y = pointer.positionDown.y;
 
-      // this.game.state.start('room');
       if (this.clickableAreaUp.contains(x, y)){
         this.control.up = true;
         this.buttonUp.frame = 0;
