@@ -79,13 +79,13 @@
         }
 
         if (this.control.left) {
-          if (this.currentSpeed > 0) {
+          if (this.currentSpeed >= 0) {
             this.steeringAngle = this.steeringAngle > 0 ? this.steeringAngle - this.steeringMultiplier : 359;
           } else if (this.currentSpeed < 0) {
             this.steeringAngle = this.steeringAngle < 359 ? this.steeringAngle + this.steeringMultiplier : 0;
           }
         } else if (this.control.right) {
-          if (this.currentSpeed > 0) {
+          if (this.currentSpeed >= 0) {
             this.steeringAngle = this.steeringAngle < 359 ? this.steeringAngle + this.steeringMultiplier : 0;
           } else if (this.currentSpeed < 0) {
             this.steeringAngle = this.steeringAngle > 0 ? this.steeringAngle - this.steeringMultiplier : 359;
@@ -431,7 +431,7 @@
     },
 
     update: function() {
-      console.log(this.game.input.mousePointer.x, this.game.input.mousePointer.y);
+      // console.log(this.game.input.mousePointer.x, this.game.input.mousePointer.y);
       var that = this;
       if (this.gameStarted) {
         Object.keys(this.cars).forEach(function(key) {
