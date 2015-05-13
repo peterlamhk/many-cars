@@ -28,7 +28,15 @@
         socket.on('reconnect_failed', connectionFailed);
     }
 
+    remote.initTrackChange = function(callbackTrackChange) {
+        socket.removeListener('trackChange');
+        socket.on('trackChange', function(trackId) {
+            callbackTrackChange(trackId, remote.playerId);
+        });
+    }
+
     remote.initMobileDisplayChange = function(callbackDisplayChange) {
+        socket.removeListener('updateCars');
         socket.on('updateCars', function(data) {
             callbackDisplayChange(data);
         });

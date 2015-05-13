@@ -10,8 +10,11 @@
     this.playerTxt = [];
     this.selectedTrack = null;
 
+    this.restartBtn = null;
     this.maxPlayer = 4;
     this.color = [0xfff000, 0x00ff00, 0xff4e8d, 0x8a00ff];
+
+    this.bg = null;
   }
 
   Result.prototype = {
@@ -29,6 +32,9 @@
 
         var gameResult = this.result;
 
+        this.bg = this.game.add.sprite(this.game.width/2, this.game.height/2, 'brown');
+        this.bg.anchor.set(0.5);
+
         // draw result page title
         this.titleTxt = this.add.bitmapText(0, 0, 'minecraftia', 'Result');
         this.titleTxt.align = 'left';
@@ -37,13 +43,19 @@
         this.titleTxt.y = this.titleTxt.textHeight / 2;
 
         // draw restart text (click to load Room)
-        this.restartTxt = this.add.bitmapText(0, 0, 'minecraftia', 'Restart game');
-        this.restartTxt.align = 'right';
-        this.restartTxt.x = this.game.width - this.restartTxt.textWidth;
-        this.restartTxt.y = this.game.height - this.restartTxt.textHeight;
+        // this.restartTxt = this.add.bitmapText(0, 0, 'minecraftia', 'Restart game');
+        // this.restartTxt.align = 'right';
+        // this.restartTxt.x = this.game.width - this.restartTxt.textWidth;
+        // this.restartTxt.y = this.game.height - this.restartTxt.textHeight;
 
-        this.restartTxt.inputEnabled = true;
-        this.restartTxt.events.onInputDown.add(function() {
+        this.restartBtn = this.game.add.sprite(0, 0, 'restart');
+        // this.restartBtn.anchor.set(0.5);
+        this.restartBtn.scale.x = this.restartBtn.scale.y = 0.5;
+        this.restartBtn.x = this.game.width - this.restartBtn.width;
+        this.restartBtn.y = this.game.height - this.restartBtn.height;
+
+        this.restartBtn.inputEnabled = true;
+        this.restartBtn.events.onInputDown.add(function() {
             that.game.state.start('room');
         }, this);
 
@@ -51,19 +63,19 @@
         var tableTitleY = this.titleTxt.y + 60;
         this.orderTitle = this.add.bitmapText(0, 0, 'minecraftia', '#');
         this.orderTitle.align = 'left';
-        this.orderTitle.tint = 0xFF9966;
+        this.orderTitle.tint = 0x223344;
         this.orderTitle.x = this.titleTxt.x + 40;
         this.orderTitle.y = tableTitleY;
 
         this.playerTitle = this.add.bitmapText(0, 0, 'minecraftia', 'Player');
         this.playerTitle.align = 'left';
-        this.playerTitle.tint = 0xFF9966;
+        this.playerTitle.tint = 0x223344;
         this.playerTitle.x = this.orderTitle.x + 100;
         this.playerTitle.y = tableTitleY;
 
         this.timeTitle = this.add.bitmapText(0, 0, 'minecraftia', 'Time');
         this.timeTitle.align = 'left';
-        this.timeTitle.tint = 0xFF9966;
+        this.timeTitle.tint = 0x223344;
         this.timeTitle.x = this.playerTitle.x + 300;
         this.timeTitle.y = tableTitleY;
 
@@ -74,19 +86,19 @@
 
             playerRecord.rank = that.add.bitmapText(0, 0, 'minecraftia', key);
             playerRecord.rank.align = 'left';
-            playerRecord.rank.tint = that.color[key-1];
+            playerRecord.rank.tint = that.color[gameResult[key].playerId-1];
             playerRecord.rank.x = that.orderTitle.x;
             playerRecord.rank.y = currentY
 
             playerRecord.player = that.add.bitmapText(0, 0, 'minecraftia', 'Player ' + gameResult[key].playerId);
             playerRecord.player.align = 'left';
-            playerRecord.player.tint = that.color[key-1];
+            playerRecord.player.tint = that.color[gameResult[key].playerId-1];
             playerRecord.player.x = that.playerTitle.x;
             playerRecord.player.y = currentY;
 
             playerRecord.time = that.add.bitmapText(0, 0, 'minecraftia', gameResult[key].time);
             playerRecord.time.align = 'left';
-            playerRecord.time.tint = that.color[key-1];
+            playerRecord.time.tint = that.color[gameResult[key].playerId-1];
             playerRecord.time.x = that.timeTitle.x;
             playerRecord.time.y = currentY;
 
