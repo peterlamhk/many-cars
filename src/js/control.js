@@ -156,22 +156,32 @@
             var isStraightForward = false;
             var lastControl = this.control;
 
-            if( remote.motion.y <= -3 || this.btncontrol.right ) {
-                this.control.left = false;
-                this.control.right = true;
-                this.debugText.setText('>>>');
+            if( /iPhone/i.test(navigator.userAgent) ) {
+                if( remote.motion.y <= -3 || this.btncontrol.right ) {
+                    this.control.left = false;
+                    this.control.right = true;
 
-            } else if( remote.motion.y >= 3 || this.btncontrol.left ) {
-                this.control.left = true;
-                this.control.right = false;
-                this.debugText.setText('<<<');
-
-            } else {
-                if( !this.btncontrol.right && !this.btncontrol.left ) {
-                    isStraightForward = true;
+                } else if( remote.motion.y >= 3 || this.btncontrol.left ) {
+                    this.control.left = true;
+                    this.control.right = false;
+                } else {
+                    if( !this.btncontrol.right && !this.btncontrol.left ) {
+                        isStraightForward = true;
+                    }
                 }
+            } else {
+                if( remote.motion.y <= -3 || this.btncontrol.left ) {
+                    this.control.left = true;
+                    this.control.right = false;
 
-                this.debugText.setText('---');
+                } else if( remote.motion.y >= 3 || this.btncontrol.right ) {
+                    this.control.left = false;
+                    this.control.right = true;
+                } else {
+                    if( !this.btncontrol.right && !this.btncontrol.left ) {
+                        isStraightForward = true;
+                    }
+                }
             }
 
             if( isStraightForward ) {
@@ -185,8 +195,6 @@
             } else {
                 this.lastAccelerometerUpdate--;
             }            
-        } else {
-            this.debugText.setText('Accelerometer control is not supported');
         }
     },
 
