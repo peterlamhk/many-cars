@@ -423,6 +423,7 @@
             var idx = i;
             return function(body, shapeA, shapeB, equation) {
               if (!body) return;
+              if (!body.sprite) return;
 
               if (body.sprite.name != this.track.track.name) {
                 this.cars[idx].cpArray.push(body.sprite.name);
@@ -452,6 +453,7 @@
             var idx = i;
             return function(body, shapeA, shapeB, equation) {
               if (!body) return;
+              if (!body.sprite) return;
 
               if (body.sprite.name.length > 1) {
                 this.cars[idx].onWall = false;
