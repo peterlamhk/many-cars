@@ -33,6 +33,10 @@
     this.control.left = false;
     this.control.right = false;
 
+    this.accelerometerRotateBackDelay = 40;
+    this.lastAccelerometerRotateTime = 0;
+    this.lastAccelerometerRotateType = 0;
+
     this.debugText = null;
   }
 
@@ -145,18 +149,50 @@
 
     update: function() {
         if( remote.motion != null && remote.motion.x != null ) {
-            if( remote.motion.y <= -4 ) {
+            var isStraightForward = false;
+
+            if( remote.motion.y <= -3 ) {
                 this.control.left = false;
                 this.control.right = true;
+                this.lastAccelerometerRotateType = -1;
                 this.debugText.setText('>>>');
-            } else if( remote.motion.y >= 4 ) {
+                this.lastAccelerometerRotateTime = this.accelerometerRotateBackDelay;
+
+            } else if( remote.motion.y >= 3 ) {
                 this.control.left = true;
                 this.control.right = false;
+                this.lastAccelerometerRotateType = 1;
                 this.debugText.setText('<<<');
+                this.lastAccelerometerRotateTime = this.accelerometerRotateBackDelay;
+
             } else {
-                this.control.left = false;
-                this.control.right = false;
-                this.debugText.setText('^^^');
+                isStraightForward = true;
+            }
+
+            if( isStraightForward ) {
+                if( this.lastAccelerometerRotateTime > 0 &&
+                    this.lastAccelerometerRotateType == -1 ) {
+                    // last rotate is right, turn some left for forward
+                    this.control.left = true;
+                    this.control.right = false;
+                    this.debugText.setText('<^^' + this.lastAccelerometerRotateTime);
+
+                } else if( this.lastAccelerometerRotateTime > 0 &&
+                    this.lastAccelerometerRotateType == 1 ) {
+                    // last rotate is left, turn some right for forward
+                    this.control.left = false;
+                    this.control.right = true;
+                    this.debugText.setText('^^>' + this.lastAccelerometerRotateTime);
+
+                } else {
+                    this.control.left = false;
+                    this.control.right = false;
+                    this.debugText.setText('^^^');
+                }
+            }
+
+            if( this.lastAccelerometerRotateTime > 0 ) {
+                this.lastAccelerometerRotateTime--;
             }
         } else {
             this.debugText.setText('Accelerometer control is not supported');
