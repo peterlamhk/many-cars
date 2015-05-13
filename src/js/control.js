@@ -61,7 +61,10 @@
         var _x = this.game.width - x;
         // this.add.image(0, 0, 'bg');
 
-        this.sprite = this.add.sprite(width/2, height/2, 'green');
+        var colorArr = ['green', 'purple', 'red', 'yellow'];
+        var id = remote.playerid;
+        id = 1 // for testing
+        this.sprite = this.add.sprite(width/2, height/2, colorArr[id]);
         this.sprite.anchor.set(0.5);
 
         // this.sprite = this.add.sprite(400, 350, 'ship');
