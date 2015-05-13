@@ -20,14 +20,14 @@
     create: function() {
         var that = this;
 
-        var sampleData = {
-            1: {playerId: 2, time: '00:11:22'},
-            2: {playerId: 3, time: '00:14:11'},
-            3: {playerId: 1, time: '00:16:33'},
-            4: {playerId: 4, time: '-'}
-        };
+        // var sampleData = {
+        //     1: {playerId: 2, time: '00:11:22'},
+        //     2: {playerId: 3, time: '00:14:11'},
+        //     3: {playerId: 1, time: '00:16:33'},
+        //     4: {playerId: 4, time: '-'}
+        // };
 
-        var gameResult = sampleData;
+        var gameResult = this.result;
 
         // draw result page title
         this.titleTxt = this.add.bitmapText(0, 0, 'minecraftia', 'Result');

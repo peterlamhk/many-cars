@@ -22,7 +22,10 @@
       this.load.bitmapFont('minecraftia', 'assets/minecraftia.png', 'assets/minecraftia.xml');
       this.load.atlas('cars', 'assets/car_spritesheet.png', 'assets/car_spritesheet.json');
       this.load.image('track1', 'assets/track1.png');
+      this.load.image('track2', 'assets/track2.png');
+      this.load.image('track3', 'assets/track3.png');
       this.load.image('zero', 'assets/FFFFFF-0.png');
+      this.load.image('initline', 'assets/initline.png');
 
       this.load.physics('physicsData', 'assets/physicsData.json');
     },

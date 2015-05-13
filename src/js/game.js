@@ -2,6 +2,7 @@
   'use strict';
 
   function Car(index, game, material, x, y, angle) {
+    this.color = [0xFFFF00, 0x0FF00, 0xFF0000, 0x0000FF];
     this.game = game;
     this.steeringAngle = angle;
     this.steeringMultiplier = 2;
@@ -15,6 +16,7 @@
     this.car = game.add.sprite(x, y, 'cars');
     this.car.anchor.set(0.5);
     this.car.name = index;
+    this.car.tint = this.color[index - 1];
 
     this.car.frame = angle/360*32+8;
     if (this.car.frame == 32) {
@@ -226,12 +228,14 @@
   }
 
   function Game() {
+    this.color = [0xFFFF00, 0x0FF00, 0xFF0000, 0x0000FF];
     this.cars = {};
     this.gameStarted = false;
     this.checkpoints = [];
-    this.trackData = [{cp: [{x: 290, y: 490, r: 5}, {x: 878, y: 439, r: 5}, {x: 510, y: 54, r: 5}], start: {x: 225, y: 490}, angle: 0}];
-    this.currentTrack = 0;
-    this.cp = this.trackData[this.currentTrack].cp;
+    this.trackData = [{cp: [{x: 290, y: 490, r: 5}, {x: 878, y: 439, r: 5}, {x: 510, y: 54, r: 5}], start: {x: 225, y: 490}, angle: 0, rt: {x: 20, y: 0}},
+      {cp: [{x: 642, y: 226, r: 5}, {x: 118, y: 97, r: 5}, {x: 182, y: 445, r: 5}], start: {x: 575, y: 225}, angle: 0, rt: {x: 514, y: 330}},
+      {cp: [{x: 290, y: 488, r: 4.5}, {x: 745, y: 228, r: 5}, {x: 510, y: 45, r: 4}], start: {x: 225, y: 495}, angle: 0, rt: {x: 20, y: 0}} ];
+
     this.cpArray = [];
     this.totalLap = 1;
     this.countDownTimer = 30;
@@ -265,8 +269,9 @@
         this.timerText.anchor.set(0.5);
 
         this.rankText = this.add.bitmapText(0, 0, 'minecraftia', '' );
-        this.rankText.x = 30;
-        this.rankText.y = 0;
+        this.rankText.x = this.trackData[this.currentTrack].rt.x;
+        this.rankText.y = this.trackData[this.currentTrack].rt.y;
+        this.rankText.scale.set(0.75, 0.75);
 
         this.startTime = this.game.time.time;
         this.gameStarted = true;
@@ -297,8 +302,15 @@
           this.readyText.setText('Game Over');
 
           this.game.time.events.add(5000, function() {
-            console.log(this.result);
-            this.game.state.start('result');
+
+            Object.keys(this.cars).forEach(function(key) {
+              if (!that.cars[key].finishTime) {
+                var resultLength = Object.keys(that.result).length;
+                that.result[resultLength+1] = {playerId: key, time: '-'};
+              }
+            });
+            this.game.state.states['result'].result = this.result;
+            // this.game.state.start('result');
           }, this);
         }
       }
@@ -327,28 +339,6 @@
     updateCountDown: function() {
       this.countDownTimer -= 1;
       this.readyText.setText(this.countDownTimer);
-    },
-    hitTrack: function(body1, body2) {
-      // this.currentSpeed -= 50;
-    },
-
-    click: function(pointer) {
-      var result;
-      var bodies = this.game.physics.p2.hitTest(pointer.position, [ this.track1aL, this.track1aR, this.track1bL, this.track1bR ]);
-
-      if (bodies.length === 0) {
-        result = "You didn't click a Body";
-      } else {
-        result = "You clicked: ";
-        for (var i = 0; i < bodies.length; i++) {
-          result = result + bodies[i].parent.sprite.key;
-
-          if (i < bodies.length - 1) {
-              result = result + ', ';
-            }
-        }
-      }
-      console.log(result);
     },
 
     create: function() {
@@ -380,10 +370,14 @@
       contactMaterial.frictionRelaxation = 3;
       contactMaterial.surfaceVelocity = 0;
 
-      this.track = new Track('track1', this.game, trackMaterial);
+      this.track = new Track(this.selectedTrack, this.game, trackMaterial);
       this.track.track.body.setCollisionGroup(trackCollisionGroup);
-      this.track.track.body.collides(carCollisionGroup, this.hitTrack, this);
+      this.track.track.body.collides([carCollisionGroup]);
 
+      this.initline = this.game.add.sprite(this.trackData[this.currentTrack].start.x, this.trackData[this.currentTrack].start.y, 'initline');
+      this.initline.anchor.set(0, 0.5);
+
+      this.cp = this.trackData[this.currentTrack].cp;
 
       for (var i = 0; i < 3; i++) {
         this.checkpoints.push(new CheckPoint(i, this.game, checkpointMaterial, this.cp[i].x, this.cp[i].y, this.cp[i].r));
@@ -398,7 +392,7 @@
           this.cars[i].car.body.setCollisionGroup(carCollisionGroup);
           this.cars[i].car.body.collides([carCollisionGroup, trackCollisionGroup, checkpointCollisionGroup]);
 
-          this.cars[i].car.body.onBeginContact.add(function() {
+          this.cars[i].car.body.onBeginContact.add(function(body, shapeA, shapeB, equation) {
             var idx = i;
             return function(body, shapeA, shapeB, equation) {
               console.log('haha: ' + body.sprite.name);
@@ -427,9 +421,6 @@
         }
       }
 
-      // this.cursors = this.game.input.keyboard.createCursorKeys();
-      this.game.input.onDown.add(this.click, this);
-
       // set listener to update remote control
       var that = this;
       viewer.initPlayerMoveListener(function(playerId, moves) {
@@ -440,6 +431,7 @@
     },
 
     update: function() {
+      console.log(this.game.input.mousePointer.x, this.game.input.mousePointer.y);
       var that = this;
       if (this.gameStarted) {
         Object.keys(this.cars).forEach(function(key) {
