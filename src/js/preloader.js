@@ -26,6 +26,7 @@
       this.load.image('track3', 'assets/track3.png');
       this.load.image('zero', 'assets/FFFFFF-0.png');
       this.load.image('background', 'assets/background.png');
+      this.load.image('brown', 'assets/brown_background.png');
       this.load.image('start', 'assets/start.png');
       this.load.image('restart', 'assets/restart.png');
       this.load.image('play', 'assets/play.png');
