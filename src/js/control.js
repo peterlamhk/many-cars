@@ -143,7 +143,7 @@
 
         if (window.DeviceMotionEvent) {
             window.addEventListener('devicemotion', this.motion, false);
-            this.debugText.setText('');
+            this.debugText.setText('Accelerometer control enabled');
         }
     },
 
