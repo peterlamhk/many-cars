@@ -14,7 +14,7 @@
 
     var initSocketIO = function() {
         var host = document.domain;
-        var port = 3000;
+        var port = window.location.port || '80';
 
         socket = io('ws://' + host + ':' + port, {
             'reconnectionAttempts': 3
