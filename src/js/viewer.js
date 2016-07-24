@@ -13,10 +13,10 @@
     }
 
     var initSocketIO = function() {
+        var protocol = ( window.location.protocol == 'https:' ) ? 'wss:' : 'ws:';
         var host = document.domain;
-        var port = window.location.port || '80';
 
-        socket = io('ws://' + host + ':' + port, {
+        socket = io(protocol + '//' + host, {
             'reconnectionAttempts': 3
         });
 
