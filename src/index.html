@@ -5,28 +5,43 @@
   <title>drift-runners</title>
 
   <!-- build:css main.min.css -->
-  <link rel="stylesheet" href="css/main.css"> 
+  <link rel="stylesheet" href="css/main.css">
   <!-- /build -->
 </head>
 
 <body>
-  
+
   <div id="drift-runners-game" class="game"></div>
 
   <!-- build:remove -->
-  <script src="http://localhost:35729/livereload.js"></script>  
+  <script src="http://localhost:35729/livereload.js"></script>
   <!-- /build -->
 
-  <!-- build:js phaser.min.js-->
+  <!-- build:js phaser.min.js -->
   <script src="bower_components/phaser-official/build/phaser.min.js"></script>
   <!-- /build -->
-    
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+
+  <!-- build:js viewer.js -->
+  <script src="js/viewer.js"></script>
+  <!-- /build -->
+
+  <!-- build:js remote.js -->
+  <script src="js/remote.js"></script>
+  <!-- /build -->
+
   <!-- build:js main.min.js -->
   <script src="js/boot.js"></script>
   <script src="js/preloader.js"></script>
+  <script src="js/lobby.js"></script>
+  <script src="js/room.js"></script>
+  <script src="js/control.js"></script>
   <script src="js/menu.js"></script>
   <script src="js/game.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/result.js"></script>
   <!-- yo phaser:state new-state-files-put-here -->
   <!-- /build -->
 
